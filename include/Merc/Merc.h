@@ -11,7 +11,8 @@
 
 #include <Merc/NetworkSystem.h>
 #include <Merc/IPAddress.h>
-#include <Merc/Socket.h>
+#include <Merc/TCPSocket.h>
+#include <Merc/UDPSocket.h>
 
 
 #endif

@@ -10,6 +10,8 @@
 
 
 #include <Merc/Socket.h>
+#include <Merc/IPAddress.h>
+#include <memory>
 
 
 namespace Mc
@@ -21,13 +23,23 @@ class MC_EXPORT TCPSocket : public Socket
     
     public:
         
-        virtual void Bind(/*...*/) = 0;
-        virtual void Listen(/*...*/) = 0;
-        virtual void Accept(/*...*/) = 0;
-        virtual void Connect(/*...*/) = 0;
+        static std::unique_ptr<TCPSocket> Make(const AddressFamily family);
 
-        virtual void Send(/*...*/) = 0;
-        virtual void Recv(/*...*/) = 0;
+        SocketType Type() const override;
+        SocketProtocol Protocol() const override; 
+
+        virtual void Bind(const IPAddress& address) = 0;
+
+        virtual void Listen(int queueSize) = 0;
+
+        virtual bool Accept(std::unique_ptr<TCPSocket>& socket, std::unique_ptr<IPAddress>& address) = 0;
+
+        //! Connects this socket with the specified host address.
+        virtual void Connect(const IPAddress& address) = 0;
+
+        virtual int Send(const char* data, int dataSize) = 0;
+
+        virtual int Recv(char* data, int dataSize) = 0;
         
 };
 

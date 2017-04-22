@@ -22,10 +22,15 @@ class BerkeleyUDPSocket : public UDPSocket
     
     public:
         
+        BerkeleyUDPSocket(const AddressFamily family);
+        BerkeleyUDPSocket(SOCKET sock);
+
+        void SetNonBlocking(bool enable) override;
+
         void Bind(/*...*/) override;
 
-        void Send(/*...*/) override;
-        void Recv(/*...*/) override;
+        int Send(/*...*/) override;
+        int Recv(/*...*/) override;
 
     private:
 

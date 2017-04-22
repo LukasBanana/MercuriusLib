@@ -13,9 +13,16 @@ namespace Mc
 {
 
 
-BerkeleySocket::BerkeleySocket(int domain, int type, int protocol) :
-    BerkeleySocket { ::socket(domain, type, protocol) }
+int AddressFamilyToNative(const AddressFamily family)
 {
+    switch (family)
+    {
+        case AddressFamily::IPv4:
+            return AF_INET;
+        case AddressFamily::IPv6:
+            return AF_INET6;
+    }
+    return 0;
 }
 
 BerkeleySocket::BerkeleySocket(SOCKET sock) :
@@ -23,6 +30,11 @@ BerkeleySocket::BerkeleySocket(SOCKET sock) :
 {
     if (sock_ == INVALID_SOCKET)
         throw std::runtime_error("invalid socket");
+}
+
+BerkeleySocket::BerkeleySocket(int domain, int type, int protocol) :
+    BerkeleySocket { ::socket(domain, type, protocol) }
+{
 }
 
 BerkeleySocket::BerkeleySocket(BerkeleySocket&& rhs) :

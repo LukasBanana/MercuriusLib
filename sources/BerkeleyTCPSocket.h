@@ -22,13 +22,18 @@ class BerkeleyTCPSocket : public TCPSocket
     
     public:
         
-        void Bind(/*...*/) override;
-        void Listen(/*...*/) override;
-        void Accept(/*...*/) override;
-        void Connect(/*...*/) override;
+        BerkeleyTCPSocket(const AddressFamily family);
+        BerkeleyTCPSocket(SOCKET sock);
 
-        void Send(/*...*/) override;
-        void Recv(/*...*/) override;
+        void SetNonBlocking(bool enable) override;
+
+        void Bind(const IPAddress& address) override;
+        void Listen(int queueSize) override;
+        bool Accept(std::unique_ptr<TCPSocket>& socket, std::unique_ptr<IPAddress>& address) override;
+        void Connect(const IPAddress& address) override;
+
+        int Send(const char* data, int dataSize) override;
+        int Recv(char* data, int dataSize) override;
 
     private:
 

@@ -13,24 +13,24 @@ namespace Mc
 {
 
 
-std::unique_ptr<IPAddress> IPAddress::MakeIPv4Address(unsigned short port)
+std::unique_ptr<IPAddress> IPAddress::MakeIPv4(unsigned short port)
 {
     return std::unique_ptr<IPAddress>(new IPv4Address(port));
 }
 
-std::unique_ptr<IPAddress> IPAddress::MakeIPv4Address(unsigned short port, unsigned long address)
+std::unique_ptr<IPAddress> IPAddress::MakeIPv4(unsigned short port, unsigned long address)
 {
     return std::unique_ptr<IPAddress>(new IPv4Address(port, address));
 }
 
-std::unique_ptr<IPAddress> IPAddress::MakeIPv4Address(unsigned short port, const std::string& addressName)
+std::unique_ptr<IPAddress> IPAddress::MakeIPv4(unsigned short port, const std::string& addressName)
 {
     return std::unique_ptr<IPAddress>(new IPv4Address(port, addressName));
 }
 
-std::unique_ptr<IPAddress> IPAddress::MakeIPv4AddressLocalhost()
+std::unique_ptr<IPAddress> IPAddress::MakeIPv4Localhost()
 {
-    return MakeIPv4Address(0, "127.0.0.1");
+    return MakeIPv4(0, "127.0.0.1");
 }
 
 std::vector<std::unique_ptr<IPAddress>> IPAddress::QueryAddressesFromHost(const std::string& hostName)

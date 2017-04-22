@@ -12,16 +12,33 @@ namespace Mc
 {
 
 
+BerkeleyUDPSocket::BerkeleyUDPSocket(const AddressFamily family) :
+    sock_ { AddressFamilyToNative(family), SOCK_DGRAM, IPPROTO_UDP }
+{
+}
+
+BerkeleyUDPSocket::BerkeleyUDPSocket(SOCKET sock) :
+    sock_ { sock }
+{
+}
+
+void BerkeleyUDPSocket::SetNonBlocking(bool enable)
+{
+    sock_.SetNonBlocking(enable);
+}
+
 void BerkeleyUDPSocket::Bind(/*...*/)
 {
 }
 
-void BerkeleyUDPSocket::Send(/*...*/)
+int BerkeleyUDPSocket::Send(/*...*/)
 {
+    return 0;
 }
 
-void BerkeleyUDPSocket::Recv(/*...*/)
+int BerkeleyUDPSocket::Recv(/*...*/)
 {
+    return 0;
 }
 
 

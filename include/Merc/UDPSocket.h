@@ -10,6 +10,8 @@
 
 
 #include <Merc/Socket.h>
+#include <Merc/IPAddress.h>
+#include <memory>
 
 
 namespace Mc
@@ -21,10 +23,15 @@ class MC_EXPORT UDPSocket : public Socket
     
     public:
         
+        static std::unique_ptr<UDPSocket> Make(const AddressFamily family);
+
+        SocketType Type() const override;
+        SocketProtocol Protocol() const override; 
+
         virtual void Bind(/*...*/) = 0;
 
-        virtual void Send(/*...*/) = 0;
-        virtual void Recv(/*...*/) = 0;
+        virtual int Send(/*...*/) = 0;
+        virtual int Recv(/*...*/) = 0;
         
 };
 

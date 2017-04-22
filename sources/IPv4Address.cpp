@@ -45,6 +45,11 @@ IPv4Address::IPv4Address(const sockaddr_in& nativeHandle) :
     memcpy(&addr_, &nativeHandle, sizeof(addr_));
 }
 
+AddressFamily IPv4Address::Family() const
+{
+    return AddressFamily::IPv4;
+}
+
 std::string IPv4Address::ToString() const
 {
     std::string s;
@@ -71,12 +76,17 @@ unsigned short IPv4Address::Port() const
     return ::ntohs(addr_.sin_port);
 }
 
-void IPv4Address::GetNativeHandle(void* nativeHandle, std::size_t* nativeHandleSize) const
+void IPv4Address::Port(unsigned short port)
+{
+    addr_.sin_port = ::htons(port);
+}
+
+void IPv4Address::GetNativeHandle(void* nativeHandle, int* nativeHandleSize) const
 {
     if (nativeHandle)
         memcpy(nativeHandle, &addr_, sizeof(addr_));
     if (nativeHandleSize)
-        *nativeHandleSize = sizeof(addr_);
+        *nativeHandleSize = static_cast<int>(sizeof(addr_));
 }
 
 

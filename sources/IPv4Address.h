@@ -27,11 +27,14 @@ class IPv4Address : public IPAddress
         IPv4Address(unsigned short port, const std::string& addressName);
         IPv4Address(const sockaddr_in& nativeHandle);
 
+        AddressFamily Family() const override;
+
         std::string ToString() const override;
 
         unsigned short Port() const override;
+        void Port(unsigned short port) override;
         
-        void GetNativeHandle(void* nativeHandle, std::size_t* nativeHandleSize) const override;
+        void GetNativeHandle(void* nativeHandle, int* nativeHandleSize) const override;
 
     private:
 

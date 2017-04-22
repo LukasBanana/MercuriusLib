@@ -6,34 +6,100 @@
  */
 
 #include "BerkeleyTCPSocket.h"
+#include "IPv4Address.h"
+#include <stdexcept>
 
 
 namespace Mc
 {
 
 
-void BerkeleyTCPSocket::Accept(/*...*/)
+BerkeleyTCPSocket::BerkeleyTCPSocket(const AddressFamily family) :
+    sock_ { AddressFamilyToNative(family), SOCK_STREAM, IPPROTO_TCP }
 {
 }
 
-void BerkeleyTCPSocket::Bind(/*...*/)
+BerkeleyTCPSocket::BerkeleyTCPSocket(SOCKET sock) :
+    sock_ { sock }
 {
 }
 
-void BerkeleyTCPSocket::Connect(/*...*/)
+void BerkeleyTCPSocket::SetNonBlocking(bool enable)
 {
+    sock_.SetNonBlocking(enable);
 }
 
-void BerkeleyTCPSocket::Listen(/*...*/)
+void BerkeleyTCPSocket::Bind(const IPAddress& address)
 {
+    /* Get native socket address */
+    sockaddr addr;
+    int addrSize = 0;
+    address.GetNativeHandle(&addr, &addrSize);
+
+    /* Bind socket to address */
+    if (::bind(sock_.GetNativeHandle(), &addr, static_cast<int>(addrSize)) == SOCKET_ERROR)
+        throw std::runtime_error("failed to bind TCP/IP socket to address: " + address.ToString());
 }
 
-void BerkeleyTCPSocket::Send(/*...*/)
+void BerkeleyTCPSocket::Listen(int queueSize)
 {
+    /* Listen on socket channel */
+    if (::listen(sock_.GetNativeHandle(), queueSize) == SOCKET_ERROR)
+        throw std::runtime_error("failed to listen on TCP/IP socket with queue size: " + std::to_string(queueSize));
 }
 
-void BerkeleyTCPSocket::Recv(/*...*/)
+bool BerkeleyTCPSocket::Accept(std::unique_ptr<TCPSocket>& socket, std::unique_ptr<IPAddress>& address)
 {
+    /* Accept incoming socket connection */
+    sockaddr addr;
+    int addrSize = 0;
+
+    auto sock = ::accept(sock_.GetNativeHandle(), &addr, &addrSize);
+
+    if (sock == INVALID_SOCKET)
+        throw std::runtime_error("failed to accept incoming TCP/IP connection");
+
+    /* Create output address */
+    switch (addr.sa_family)
+    {
+        case AF_INET:
+            address = std::unique_ptr<IPAddress>(new IPv4Address(reinterpret_cast<const sockaddr_in&>(addr)));
+            break;
+
+        case AF_INET6:
+            //TODO...
+            break;
+
+        default:
+            break;
+    }
+
+    /* Create output socket */
+    socket = std::unique_ptr<TCPSocket>(new BerkeleyTCPSocket(sock));
+
+    return true;
+}
+
+void BerkeleyTCPSocket::Connect(const IPAddress& address)
+{
+    /* Get native socket address */
+    sockaddr addr;
+    int addrSize = 0;
+    address.GetNativeHandle(&addr, &addrSize);
+
+    /* Connect socket to address */
+    if (::connect(sock_.GetNativeHandle(), &addr, static_cast<int>(addrSize)) == SOCKET_ERROR)
+        throw std::runtime_error("failed to connect TCP/IP socket to address: " + address.ToString());
+}
+
+int BerkeleyTCPSocket::Send(const char* data, int dataSize)
+{
+    return ::send(sock_.GetNativeHandle(), data, dataSize, 0);
+}
+
+int BerkeleyTCPSocket::Recv(char* data, int dataSize)
+{
+    return ::recv(sock_.GetNativeHandle(), data, dataSize, 0);
 }
 
 

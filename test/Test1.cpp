@@ -38,8 +38,7 @@ int main()
     {
         Mc::NetworkSystem net;
 
-        auto addrLocalhost = Mc::IPAddress::MakeIPv4AddressLocalhost();
-
+        auto addrLocalhost = Mc::IPAddress::MakeIPv4Localhost();
         std::cout << "localhost = " << addrLocalhost->ToString() << std::endl;
 
         //PrintHostAddresses("www.google.com");
@@ -48,6 +47,34 @@ int main()
         PrintHostAddresses("localhost");
         PrintHostAddresses("www.facebook.com");
         PrintHostAddresses("www.facebook.de");
+
+        // Send HTTP GET request to server
+        auto addrGoogle = Mc::IPAddress::QueryAddressesFromHost("www.google.de");
+        if (!addrGoogle.empty())
+        {
+            auto& addr = addrGoogle.front();
+            addr->Port(80);
+
+            auto sock = Mc::TCPSocket::Make(Mc::AddressFamily::IPv4);
+
+            sock->Connect(*addr);
+
+            std::string getRequest = "GET /index.html HTTP/1.1\r\nHost: www.google.de\r\n\r\n";
+            sock->Send(getRequest.c_str(), static_cast<int>(getRequest.size() + 1));
+            
+            char getResponse[513];
+            while (true)
+            {
+                auto len = sock->Recv(getResponse, 512);
+                if (len > 0)
+                {
+                    getResponse[len] = 0;
+                    std::cout << getResponse;
+                }
+                else
+                    break;
+            }
+        }
 
 
     }

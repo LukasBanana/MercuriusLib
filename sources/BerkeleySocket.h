@@ -9,6 +9,7 @@
 #define MC_BERKELEY_SOCKET_H
 
 
+#include <Merc/IPAddress.h>
 #include "Platform/Platform.h"
 
 
@@ -16,17 +17,20 @@ namespace Mc
 {
 
 
+// Returns the native value for the specified address family.
+int AddressFamilyToNative(const AddressFamily family);
+
 class BerkeleySocket
 {
 
     public:
 
-        // Opens a new socket with the specified parameters.
-        BerkeleySocket(int domain, int type, int protocol);
-
         // Takes the ownership of the specified socket.
         BerkeleySocket(SOCKET sock);
         
+        // Opens a new socket with the specified parameters.
+        BerkeleySocket(int domain, int type, int protocol);
+
         // Takes the ownership of the socket of the specified object.
         BerkeleySocket(BerkeleySocket&& rhs);
 
@@ -37,9 +41,15 @@ class BerkeleySocket
         
         void SetNonBlocking(bool enable);
 
+        // Returns the native socket handle.
+        inline SOCKET GetNativeHandle() const
+        {
+            return sock_;
+        }
+
     private:
 
-        SOCKET sock_;
+        SOCKET sock_ = INVALID_SOCKET;
 
 };
 
