@@ -23,6 +23,11 @@ macro(ADD_TEST_PROJECT TEST_NAME TEST_FILES)
 	target_compile_features(${TEST_NAME} PRIVATE cxx_range_for)
 endmacro()
 
+if(MSVC)
+	# Disable some warnings for MSVC compiler
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251")
+endif(MSVC)
+
 
 # === Global files ===
 

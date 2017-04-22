@@ -33,6 +33,17 @@ std::unique_ptr<IPAddress> IPAddress::MakeIPv4Localhost()
     return MakeIPv4(0, "127.0.0.1");
 }
 
+std::unique_ptr<IPAddress> IPAddress::Make(const AddressFamily family, unsigned short port)
+{
+    switch (family)
+    {
+        case AddressFamily::IPv4:
+            return MakeIPv4(port);
+        default:
+            return nullptr;
+    }
+}
+
 std::vector<std::unique_ptr<IPAddress>> IPAddress::QueryAddressesFromHost(const std::string& hostName)
 {
     /* Query addresses from host name */
