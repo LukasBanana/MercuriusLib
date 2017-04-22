@@ -81,12 +81,14 @@ void IPv4Address::Port(unsigned short port)
     addr_.sin_port = ::htons(port);
 }
 
-void IPv4Address::GetNativeHandle(void* nativeHandle, int* nativeHandleSize) const
+const void* IPv4Address::GetNativeHandle() const
 {
-    if (nativeHandle)
-        memcpy(nativeHandle, &addr_, sizeof(addr_));
-    if (nativeHandleSize)
-        *nativeHandleSize = static_cast<int>(sizeof(addr_));
+    return reinterpret_cast<const void*>(&addr_);
+}
+
+int IPv4Address::GetNativeHandleSize() const
+{
+    return static_cast<int>(sizeof(addr_));
 }
 
 

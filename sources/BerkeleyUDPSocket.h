@@ -27,10 +27,10 @@ class BerkeleyUDPSocket : public UDPSocket
 
         void SetNonBlocking(bool enable) override;
 
-        void Bind(/*...*/) override;
+        void Bind(const IPAddress& address) override;
 
-        int Send(/*...*/) override;
-        int Recv(/*...*/) override;
+        int Send(const char* data, int dataSize, const IPAddress& address) override;
+        int Recv(char* data, int dataSize, IPAddress& address) override;
 
     private:
 

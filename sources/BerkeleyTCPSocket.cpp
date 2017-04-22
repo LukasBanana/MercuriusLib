@@ -31,13 +31,13 @@ void BerkeleyTCPSocket::SetNonBlocking(bool enable)
 
 void BerkeleyTCPSocket::Bind(const IPAddress& address)
 {
-    /* Get native socket address */
-    sockaddr addr;
-    int addrSize = 0;
-    address.GetNativeHandle(&addr, &addrSize);
-
     /* Bind socket to address */
-    if (::bind(sock_.GetNativeHandle(), &addr, static_cast<int>(addrSize)) == SOCKET_ERROR)
+    auto result = ::bind(
+        sock_.GetNativeHandle(),
+        reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
+        address.GetNativeHandleSize()
+    );
+    if (result == SOCKET_ERROR)
         throw std::runtime_error("failed to bind TCP/IP socket to address: " + address.ToString());
 }
 
@@ -82,13 +82,13 @@ bool BerkeleyTCPSocket::Accept(std::unique_ptr<TCPSocket>& socket, std::unique_p
 
 void BerkeleyTCPSocket::Connect(const IPAddress& address)
 {
-    /* Get native socket address */
-    sockaddr addr;
-    int addrSize = 0;
-    address.GetNativeHandle(&addr, &addrSize);
-
     /* Connect socket to address */
-    if (::connect(sock_.GetNativeHandle(), &addr, static_cast<int>(addrSize)) == SOCKET_ERROR)
+    auto result = ::connect(
+        sock_.GetNativeHandle(),
+        reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
+        address.GetNativeHandleSize()
+    );
+    if (result == SOCKET_ERROR)
         throw std::runtime_error("failed to connect TCP/IP socket to address: " + address.ToString());
 }
 

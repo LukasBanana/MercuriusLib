@@ -27,16 +27,25 @@ void BerkeleyUDPSocket::SetNonBlocking(bool enable)
     sock_.SetNonBlocking(enable);
 }
 
-void BerkeleyUDPSocket::Bind(/*...*/)
+void BerkeleyUDPSocket::Bind(const IPAddress& address)
 {
+    /* Bind socket to address */
+    auto result = ::bind(
+        sock_.GetNativeHandle(),
+        reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
+        address.GetNativeHandleSize()
+    );
+    if (result == SOCKET_ERROR)
+        throw std::runtime_error("failed to bind UDP/IP socket to address: " + address.ToString());
 }
 
-int BerkeleyUDPSocket::Send(/*...*/)
+int BerkeleyUDPSocket::Send(const char* data, int dataSize, const IPAddress& address)
 {
+
     return 0;
 }
 
-int BerkeleyUDPSocket::Recv(/*...*/)
+int BerkeleyUDPSocket::Recv(char* data, int dataSize, IPAddress& address)
 {
     return 0;
 }

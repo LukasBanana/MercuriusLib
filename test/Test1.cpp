@@ -72,7 +72,10 @@ int main()
                     std::cout << getResponse;
                 }
                 else
+                {
+                    std::cout << "\n\n";
                     break;
+                }
             }
         }
 

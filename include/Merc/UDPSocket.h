@@ -28,10 +28,14 @@ class MC_EXPORT UDPSocket : public Socket
         SocketType Type() const override;
         SocketProtocol Protocol() const override; 
 
-        virtual void Bind(/*...*/) = 0;
+        //! Binds this socket to the specified address.
+        virtual void Bind(const IPAddress& address) = 0;
 
-        virtual int Send(/*...*/) = 0;
-        virtual int Recv(/*...*/) = 0;
+        //! Sends the specified byte buffer over this socket and returns the number of bytes actually send.
+        virtual int Send(const char* data, int dataSize, const IPAddress& address) = 0;
+
+        //! Receives a byte buffer with the specified maximal bytes and returns the number of actually received bytes.
+        virtual int Recv(char* data, int dataSize, IPAddress& address) = 0;
         
 };
 

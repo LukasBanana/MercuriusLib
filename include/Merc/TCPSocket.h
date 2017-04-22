@@ -28,17 +28,22 @@ class MC_EXPORT TCPSocket : public Socket
         SocketType Type() const override;
         SocketProtocol Protocol() const override; 
 
+        //! Binds this socket to the specified address.
         virtual void Bind(const IPAddress& address) = 0;
 
+        //! Listen on this socket channel with the specified queue size.
         virtual void Listen(int queueSize) = 0;
 
+        //! Accepts a new socket connection and retrieves the TCP socket and IP address.
         virtual bool Accept(std::unique_ptr<TCPSocket>& socket, std::unique_ptr<IPAddress>& address) = 0;
 
         //! Connects this socket with the specified host address.
         virtual void Connect(const IPAddress& address) = 0;
 
+        //! Sends the specified byte buffer over this socket and returns the number of bytes actually send.
         virtual int Send(const char* data, int dataSize) = 0;
 
+        //! Receives a byte buffer with the specified maximal bytes and returns the number of actually received bytes.
         virtual int Recv(char* data, int dataSize) = 0;
         
 };
