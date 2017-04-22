@@ -52,8 +52,11 @@ class MC_EXPORT IPAddress
         //! Sets the new port number.
         virtual void Port(unsigned short port) = 0;
 
-        //! Returns a raw pointer to the native socket address handle, i.e. either from type 'const sockaddr_in*' or 'const sockaddr_in6*'.
+        //! Returns a constant raw pointer to the native socket address handle, i.e. either from type 'const sockaddr_in*' or 'const sockaddr_in6*'.
         virtual const void* GetNativeHandle() const = 0;
+
+        //! Returns a raw pointer to the native socket address handle, i.e. either from type 'sockaddr_in*' or 'sockaddr_in6*'.
+        virtual void* GetNativeHandle() = 0;
 
         //! Returns the size of the native socket address handle, i.e. either 'sizeof(sockaddr_in)' or 'sizeof(sockaddr_in6)'.
         virtual int GetNativeHandleSize() const = 0;

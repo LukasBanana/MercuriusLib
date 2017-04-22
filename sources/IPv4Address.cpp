@@ -53,19 +53,18 @@ AddressFamily IPv4Address::Family() const
 std::string IPv4Address::ToString() const
 {
     std::string s;
+    char buf[16];
 
-    auto addr = reinterpret_cast<const unsigned char*>(&addr_.sin_addr.s_addr);
-
-    s += std::to_string(static_cast<int>(addr[0])) + ".";
-    s += std::to_string(static_cast<int>(addr[1])) + ".";
-    s += std::to_string(static_cast<int>(addr[2])) + ".";
-    s += std::to_string(static_cast<int>(addr[3]));
-
-    auto port = Port();
-    if (port > 0)
+    if (auto ptr = ::inet_ntop(AF_INET, &addr_.sin_addr, buf, 16))
     {
-        s += ':';
-        s += std::to_string(port);
+        s = ptr;
+
+        auto port = Port();
+        if (port > 0)
+        {
+            s += ':';
+            s += std::to_string(port);
+        }
     }
 
     return s;
@@ -84,6 +83,11 @@ void IPv4Address::Port(unsigned short port)
 const void* IPv4Address::GetNativeHandle() const
 {
     return reinterpret_cast<const void*>(&addr_);
+}
+
+void* IPv4Address::GetNativeHandle()
+{
+    return reinterpret_cast<void*>(&addr_);
 }
 
 int IPv4Address::GetNativeHandleSize() const

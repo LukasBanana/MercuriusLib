@@ -35,6 +35,8 @@ class IPv4Address : public IPAddress
         void Port(unsigned short port) override;
         
         const void* GetNativeHandle() const override;
+        void* GetNativeHandle() override;
+
         int GetNativeHandleSize() const override;
 
     private:

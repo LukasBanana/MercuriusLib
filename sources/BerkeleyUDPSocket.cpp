@@ -41,13 +41,26 @@ void BerkeleyUDPSocket::Bind(const IPAddress& address)
 
 int BerkeleyUDPSocket::Send(const char* data, int dataSize, const IPAddress& address)
 {
-
-    return 0;
+    return ::sendto(
+        sock_.GetNativeHandle(), data, dataSize, 0,
+        reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
+        address.GetNativeHandleSize()
+    );
 }
 
 int BerkeleyUDPSocket::Recv(char* data, int dataSize, IPAddress& address)
 {
-    return 0;
+    sockaddr addr;
+    int addrSize = 0;
+
+    auto result = ::recvfrom(sock_.GetNativeHandle(), data, dataSize, 0, &addr, &addrSize);
+
+    if (addrSize == address.GetNativeHandleSize())
+        memcpy(reinterpret_cast<char*>(address.GetNativeHandle()), &addr, addrSize);
+    else
+        throw std::runtime_error("socket address size mismatch when receiving data from UDP/IP socket");
+
+    return result;
 }
 
 
