@@ -49,7 +49,7 @@ int main()
         PrintHostAddresses("www.facebook.de");
 
         // Send HTTP GET request to server
-        auto addrGoogle = Mc::IPAddress::QueryAddressesFromHost("www.google.de");
+        auto addrGoogle = Mc::IPAddress::QueryAddressesFromHost("www.google.com");
         if (!addrGoogle.empty())
         {
             auto& addr = addrGoogle.front();
@@ -59,7 +59,7 @@ int main()
 
             sock->Connect(*addr);
 
-            std::string getRequest = "GET /index.html HTTP/1.1\r\nHost: www.google.de\r\n\r\n";
+            std::string getRequest = "GET /index.html HTTP/1.1\r\nHost: www.google.com\r\n\r\n";
             sock->Send(getRequest.c_str(), static_cast<int>(getRequest.size() + 1));
             
             char getResponse[513];
