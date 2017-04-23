@@ -49,6 +49,8 @@ int main()
         Mc::SessionReception reception(*address, sessionDesc, "");
 
         // Wait for logins
+        std::cout << "Waiting for login attempts ..." << std::endl;
+
         while (true)
         {
             // Poll login attempts

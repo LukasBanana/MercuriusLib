@@ -40,6 +40,8 @@ class BerkeleySocket
         BerkeleySocket& operator = (const BerkeleySocket&) = delete;
         
         void SetNonBlocking(bool enable);
+        void SetBroadcasting(bool enable);
+        void SetReuseAddress(bool enable);
 
         // Returns the native socket handle.
         inline SOCKET GetNativeHandle() const

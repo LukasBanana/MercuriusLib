@@ -27,6 +27,16 @@ void BerkeleyUDPSocket::SetNonBlocking(bool enable)
     sock_.SetNonBlocking(enable);
 }
 
+void BerkeleyUDPSocket::SetBroadcasting(bool enable)
+{
+    sock_.SetBroadcasting(enable);
+}
+
+void BerkeleyUDPSocket::SetReuseAddress(bool enable)
+{
+    sock_.SetReuseAddress(enable);
+}
+
 void BerkeleyUDPSocket::Bind(const IPAddress& address)
 {
     /* Bind socket to address */

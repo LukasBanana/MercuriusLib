@@ -61,6 +61,18 @@ void BerkeleySocket::SetNonBlocking(bool enable)
     ::ioctlsocket(sock_, FIONBIO, &flags);
 }
 
+void BerkeleySocket::SetBroadcasting(bool enable)
+{
+    char flags = (enable ? 1 : 0);
+    ::setsockopt(sock_, SOL_SOCKET, SO_BROADCAST, &flags, sizeof(flags));
+}
+
+void BerkeleySocket::SetReuseAddress(bool enable)
+{
+    char flags = (enable ? 1 : 0);
+    ::setsockopt(sock_, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags));
+}
+
 
 } // /namespace Mc
 

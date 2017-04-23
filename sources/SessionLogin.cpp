@@ -13,11 +13,15 @@ namespace Mc
 {
 
 
-SessionLogin::SessionLogin(const AddressFamily family) :
-    sock_    { UDPSocket::Make(family) },
-    address_ { IPAddress::Make(family) }
+SessionLogin::SessionLogin(const IPAddress& portAddress) :
+    sock_    { UDPSocket::Make(portAddress.Family()) },
+    address_ { IPAddress::Make(portAddress.Family()) }
 {
+    /* Bind socket to address */
     sock_->SetNonBlocking(true);
+    sock_->SetReuseAddress(true);
+    //sock_->SetBroadcasting(true);
+    sock_->Bind(portAddress);
 }
 
 SessionLogin::~SessionLogin()

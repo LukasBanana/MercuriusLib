@@ -26,7 +26,7 @@ class MC_EXPORT SessionLogin
 
     public:
 
-        SessionLogin(const AddressFamily family);
+        SessionLogin(const IPAddress& portAddress);
         virtual ~SessionLogin();
 
         void SendLogin(const IPAddress& address, const std::string& sessionKey);

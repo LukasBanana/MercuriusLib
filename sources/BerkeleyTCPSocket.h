@@ -26,6 +26,8 @@ class BerkeleyTCPSocket : public TCPSocket
         BerkeleyTCPSocket(SOCKET sock);
 
         void SetNonBlocking(bool enable) override;
+        void SetBroadcasting(bool enable) override;
+        void SetReuseAddress(bool enable) override;
 
         void Bind(const IPAddress& address) override;
         void Listen(int queueSize) override;

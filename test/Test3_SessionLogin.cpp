@@ -35,8 +35,8 @@ class Login : public Mc::SessionLogin
 
 public:
         
-    Login() :
-        Mc::SessionLogin { Mc::AddressFamily::IPv4 }
+    Login(unsigned short port) :
+        Mc::SessionLogin { *Mc::IPAddress::MakeIPv4(port) }
     {
     }
 
@@ -62,7 +62,7 @@ int main()
         auto port = GetInputLineAs<unsigned short>();
 
         // Start session login
-        Login login;
+        Login login(port);
 
         // Send broadcast requests all network adapters
         for (const auto& adapter : net.QueryAdapters())

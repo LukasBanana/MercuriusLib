@@ -39,6 +39,10 @@ class MC_EXPORT Socket
         //! Specifies whether to set the socket into non-blocking (true) or blocking (false) state.
         virtual void SetNonBlocking(bool enable) = 0;
 
+        virtual void SetBroadcasting(bool enable) = 0;
+
+        virtual void SetReuseAddress(bool enable) = 0;
+
         //! Returns the socket type.
         virtual SocketType Type() const = 0;
 

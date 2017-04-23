@@ -26,6 +26,8 @@ class BerkeleyUDPSocket : public UDPSocket
         BerkeleyUDPSocket(SOCKET sock);
 
         void SetNonBlocking(bool enable) override;
+        void SetBroadcasting(bool enable) override;
+        void SetReuseAddress(bool enable) override;
 
         void Bind(const IPAddress& address) override;
 

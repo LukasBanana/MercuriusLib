@@ -29,6 +29,16 @@ void BerkeleyTCPSocket::SetNonBlocking(bool enable)
     sock_.SetNonBlocking(enable);
 }
 
+void BerkeleyTCPSocket::SetBroadcasting(bool enable)
+{
+    sock_.SetBroadcasting(enable);
+}
+
+void BerkeleyTCPSocket::SetReuseAddress(bool enable)
+{
+    sock_.SetReuseAddress(enable);
+}
+
 void BerkeleyTCPSocket::Bind(const IPAddress& address)
 {
     /* Bind socket to address */

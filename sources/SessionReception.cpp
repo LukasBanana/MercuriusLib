@@ -21,6 +21,7 @@ SessionReception::SessionReception(const IPAddress& address, const std::string& 
 {
     /* Bind socket to address */
     sock_->SetNonBlocking(true);
+    sock_->SetReuseAddress(true);
     sock_->Bind(address);
 
     /* Run service thread */
@@ -54,9 +55,13 @@ std::string SessionReception::SessionDesc() const
 std::unique_ptr<IPAddress> SessionReception::PollLoginAddress()
 {
     std::lock_guard<std::mutex> guard { sessionMutex_ };
-    auto address = std::move(loginAddresses_.back());
-    loginAddresses_.pop();
-    return address;
+    if (!loginAddresses_.empty())
+    {
+        auto address = std::move(loginAddresses_.back());
+        loginAddresses_.pop();
+        return address;
+    }
+    return nullptr;
 }
 
 
