@@ -45,6 +45,12 @@ class MC_EXPORT TCPSocket : public Socket
 
         //! Receives a byte buffer with the specified maximal bytes and returns the number of actually received bytes.
         virtual int Recv(char* data, int dataSize) = 0;
+
+        //! Sends the specified string over this socket and returns the number of bytes actually send.
+        int Send(const std::string& s);
+
+        //! Receives a string with a maximal size of the specified stirng (must be pre-allocated) and returns the number of actually received bytes.
+        int Recv(std::string& s);
         
 };
 

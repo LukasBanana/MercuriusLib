@@ -28,6 +28,19 @@ SocketProtocol UDPSocket::Protocol() const
     return SocketProtocol::UDP;
 }
 
+int UDPSocket::Send(const std::string& s, const IPAddress& address)
+{
+    return Send(s.c_str(), static_cast<int>(s.size()), address);
+}
+
+int UDPSocket::Recv(std::string& s, IPAddress& address)
+{
+    auto result = Recv(&s[0], static_cast<int>(s.size()), address);
+    if (result >= 0)
+        s.resize(static_cast<std::size_t>(result));
+    return result;
+}
+
 
 } // /namespace Mc
 

@@ -23,7 +23,7 @@ MC_EXPORT std::string ToString(const NetworkAdapterType t)
         case NetworkAdapterType::PPP:       return "Point-to-Point Protocol (PPP)";
         case NetworkAdapterType::LoopBack:  return "Loop Back Protocol";
         case NetworkAdapterType::SLIP:      return "Serial Line Internet Protocol (SLIP)";
-        default:                            return "";
+        default:                            return "<Undefined>";
     }
 }
 

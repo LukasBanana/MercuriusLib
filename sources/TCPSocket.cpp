@@ -28,6 +28,19 @@ SocketProtocol TCPSocket::Protocol() const
     return SocketProtocol::TCP;
 }
 
+int TCPSocket::Send(const std::string& s)
+{
+    return Send(s.c_str(), static_cast<int>(s.size()));
+}
+
+int TCPSocket::Recv(std::string& s)
+{
+    auto result = Recv(&s[0], static_cast<int>(s.size()));
+    if (result >= 0)
+        s.resize(static_cast<std::size_t>(result));
+    return result;
+}
+
 
 } // /namespace Mc
 

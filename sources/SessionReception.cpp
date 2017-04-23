@@ -6,6 +6,7 @@
  */
 
 #include <Merc/SessionReception.h>
+#include "SocketUtil.h"
 
 
 namespace Mc
@@ -57,24 +58,22 @@ std::string SessionReception::SessionDesc() const
 
 void SessionReception::RecvLogins(long long interval)
 {
-    static const int msgMaxLen = 4096;
-    char msg[msgMaxLen];
+    char msg[g_msgMaxSize];
 
     while (Running())
     {
         /* Receive next login request */
-        auto len = sock_->Recv(msg, msgMaxLen, *address_);
+        auto len = sock_->Recv(msg, g_msgMaxSize, *address_);
 
-        if (len >= 0 && len < msgMaxLen)
+        if (len >= 0 && len < g_msgMaxSize)
             msg[len] = '\0';
 
         /* Compare message with session */
-        const auto key = SessionKey();
-        if (key.empty() || key.compare(msg) == 0)
+        const auto key = g_msgPrefix + SessionKey();
+        if (key.compare(msg) == 0)
         {
             /* Send login response */
-            const auto desc = SessionDesc();
-            sock_->Send(desc.c_str(), static_cast<int>(desc.size()), *address_);
+            sock_->Send(SessionDesc(), *address_);
         }
 
         /* Wait a moment (100ms) to give the other threads time to run */

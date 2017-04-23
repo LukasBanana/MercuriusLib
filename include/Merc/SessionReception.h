@@ -19,13 +19,12 @@ namespace Mc
 {
 
 
-//! Base class for all thread based services.
 class MC_EXPORT SessionReception final : private Service
 {
 
     public:
 
-        SessionReception(const Service&) = delete;
+        SessionReception(const SessionReception&) = delete;
         SessionReception& operator = (const SessionReception&) = delete;
 
         SessionReception(const IPAddress& address, const std::string& sessionDesc, const std::string& sessionKey);

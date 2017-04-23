@@ -36,7 +36,7 @@ class MC_EXPORT IPAddress
         static std::unique_ptr<IPAddress> MakeIPv4(unsigned short port, const std::string& addressName);
         static std::unique_ptr<IPAddress> MakeIPv4Localhost();
 
-        static std::unique_ptr<IPAddress> Make(const AddressFamily family, unsigned short port);
+        static std::unique_ptr<IPAddress> Make(const AddressFamily family, unsigned short port = 0);
 
         static std::vector<std::unique_ptr<IPAddress>> QueryAddressesFromHost(const std::string& hostName);
 

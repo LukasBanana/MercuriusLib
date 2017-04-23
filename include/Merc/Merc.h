@@ -10,6 +10,8 @@
 
 
 #include <Merc/NetworkSystem.h>
+#include <Merc/SessionReception.h>
+#include <Merc/SessionLogin.h>
 #include <Merc/IPAddress.h>
 #include <Merc/TCPSocket.h>
 #include <Merc/UDPSocket.h>
