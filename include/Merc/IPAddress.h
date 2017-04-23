@@ -34,7 +34,7 @@ class MC_EXPORT IPAddress
         static std::unique_ptr<IPAddress> MakeIPv4(unsigned short port);
         static std::unique_ptr<IPAddress> MakeIPv4(unsigned short port, unsigned long address);
         static std::unique_ptr<IPAddress> MakeIPv4(unsigned short port, const std::string& addressName);
-        static std::unique_ptr<IPAddress> MakeIPv4Localhost();
+        static std::unique_ptr<IPAddress> MakeIPv4Localhost(unsigned short port = 0);
 
         static std::unique_ptr<IPAddress> Make(const AddressFamily family, unsigned short port = 0);
 
@@ -62,6 +62,9 @@ class MC_EXPORT IPAddress
 
         //! Returns the size of the native socket address handle, i.e. either 'sizeof(sockaddr_in)' or 'sizeof(sockaddr_in6)'.
         virtual int GetNativeHandleSize() const = 0;
+
+        //! Returns a copy of this address instance.
+        virtual std::unique_ptr<IPAddress> Copy() const = 0;
 
 };
 

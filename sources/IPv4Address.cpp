@@ -94,6 +94,11 @@ int IPv4Address::GetNativeHandleSize() const
     return static_cast<int>(sizeof(addr_));
 }
 
+std::unique_ptr<IPAddress> IPv4Address::Copy() const
+{
+    return std::unique_ptr<IPAddress>(new IPv4Address(addr_));
+}
+
 
 } // /namespace Mc
 

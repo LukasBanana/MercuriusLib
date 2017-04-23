@@ -77,6 +77,8 @@ if(WIN32)
 endif(WIN32)
 
 ADD_TEST_PROJECT(Test1 "${PROJECT_TEST_DIR}/Test1.cpp")
+ADD_TEST_PROJECT(Test2_SessionReception "${PROJECT_TEST_DIR}/Test2_SessionReception.cpp")
+ADD_TEST_PROJECT(Test3_SessionLogin "${PROJECT_TEST_DIR}/Test3_SessionLogin.cpp")
 
 
 

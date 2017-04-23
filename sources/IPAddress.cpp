@@ -28,9 +28,9 @@ std::unique_ptr<IPAddress> IPAddress::MakeIPv4(unsigned short port, const std::s
     return std::unique_ptr<IPAddress>(new IPv4Address(port, addressName));
 }
 
-std::unique_ptr<IPAddress> IPAddress::MakeIPv4Localhost()
+std::unique_ptr<IPAddress> IPAddress::MakeIPv4Localhost(unsigned short port)
 {
-    return MakeIPv4(0, "127.0.0.1");
+    return MakeIPv4(port, "127.0.0.1");
 }
 
 std::unique_ptr<IPAddress> IPAddress::Make(const AddressFamily family, unsigned short port)

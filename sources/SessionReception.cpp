@@ -51,6 +51,14 @@ std::string SessionReception::SessionDesc() const
     return sessionDesc_;
 }
 
+std::unique_ptr<IPAddress> SessionReception::PollLoginAddress()
+{
+    std::lock_guard<std::mutex> guard { sessionMutex_ };
+    auto address = std::move(loginAddresses_.back());
+    loginAddresses_.pop();
+    return address;
+}
+
 
 /*
  * ======= Private: =======
@@ -72,8 +80,10 @@ void SessionReception::RecvLogins(long long interval)
         const auto key = g_msgPrefix + SessionKey();
         if (key.compare(msg) == 0)
         {
-            /* Send login response */
-            sock_->Send(SessionDesc(), *address_);
+            /* Send login response and add copy of address to list */
+            std::lock_guard<std::mutex> guard { sessionMutex_ };
+            sock_->Send(sessionDesc_, *address_);
+            loginAddresses_.push(address_->Copy());
         }
 
         /* Wait a moment (100ms) to give the other threads time to run */

@@ -55,10 +55,13 @@ int BerkeleyUDPSocket::Recv(char* data, int dataSize, IPAddress& address)
 
     auto result = ::recvfrom(sock_.GetNativeHandle(), data, dataSize, 0, &addr, &addrSize);
 
-    if (addrSize == address.GetNativeHandleSize())
-        memcpy(reinterpret_cast<char*>(address.GetNativeHandle()), &addr, addrSize);
-    else
-        throw std::runtime_error("socket address size mismatch when receiving data from UDP/IP socket");
+    if (result > 0)
+    {
+        if (addrSize == address.GetNativeHandleSize())
+            memcpy(reinterpret_cast<char*>(address.GetNativeHandle()), &addr, addrSize);
+        else
+            throw std::runtime_error("socket address size mismatch when receiving data from UDP/IP socket");
+    }
 
     return result;
 }

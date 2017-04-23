@@ -39,6 +39,8 @@ class IPv4Address : public IPAddress
 
         int GetNativeHandleSize() const override;
 
+        std::unique_ptr<IPAddress> Copy() const override;
+
     private:
 
         sockaddr_in addr_;

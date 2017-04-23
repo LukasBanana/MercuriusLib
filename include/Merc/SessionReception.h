@@ -13,6 +13,7 @@
 #include <Merc/UDPSocket.h>
 #include <Merc/IPAddress.h>
 #include <mutex>
+#include <queue>
 
 
 namespace Mc
@@ -35,17 +36,21 @@ class MC_EXPORT SessionReception final : private Service
         void SetSessionDesc(const std::string& s);
         std::string SessionDesc() const;
 
+        //! Returns the next address of a previous login attempt or null if there are no further login addresses.
+        std::unique_ptr<IPAddress> PollLoginAddress();
+
     private:
 
         void RecvLogins(long long interval);
 
-        std::unique_ptr<UDPSocket>  sock_;
-        std::unique_ptr<IPAddress>  address_;
+        std::unique_ptr<UDPSocket>              sock_;
+        std::unique_ptr<IPAddress>              address_;
 
         // thread shared {
-        std::string                 sessionDesc_;
-        std::string                 sessionKey_;
-        mutable std::mutex          sessionMutex_;
+        mutable std::mutex                      sessionMutex_;
+        std::string                             sessionDesc_;
+        std::string                             sessionKey_;
+        std::queue<std::unique_ptr<IPAddress>>  loginAddresses_;
         // }
 
 };

@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef MC_SESSION_RECEPTION_H
-#define MC_SESSION_RECEPTION_H
+#ifndef MC_SESSION_LOGIN_H
+#define MC_SESSION_LOGIN_H
 
 
 #include <Merc/Export.h>
