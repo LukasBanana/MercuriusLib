@@ -9,7 +9,9 @@
 #define MC_SOCKET_INTERFACE_H
 
 
+#include <Merc/NetworkAdapter.h>
 #include <string>
+#include <vector>
 
 
 namespace Mc
@@ -26,6 +28,8 @@ struct StartUpInfo
 void StartUp(StartUpInfo* info = nullptr);
 
 void CleanUp();
+
+std::vector<NetworkAdapter> QueryAdapters();
 
 
 } // /namespace Mc

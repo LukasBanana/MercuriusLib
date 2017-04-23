@@ -23,6 +23,11 @@ NetworkSystem::~NetworkSystem()
     CleanUp();
 }
 
+std::vector<NetworkAdapter> NetworkSystem::QueryAdapters() const
+{
+    return Mc::QueryAdapters();
+}
+
 
 } // /namespace Mc
 

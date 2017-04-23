@@ -10,6 +10,7 @@
 
 
 #include <Merc/Export.h>
+#include <Merc/NetworkAdapter.h>
 
 
 namespace Mc
@@ -23,6 +24,9 @@ class MC_EXPORT NetworkSystem
 
         NetworkSystem();
         ~NetworkSystem();
+
+        //! Returns the list of all network adapters.
+        std::vector<NetworkAdapter> QueryAdapters() const;
 
 };
 

@@ -32,12 +32,31 @@ static void PrintHostAddresses(const std::string& hostName)
     }
 }
 
+static void PrintNetworkAdapter(const Mc::NetworkAdapter& adapter, std::size_t idx)
+{
+    std::cout << "network adapter " << (idx++) << ':' << std::endl;
+    std::cout << "  type        = " << Mc::ToString(adapter.type) << std::endl;
+    std::cout << "  description = " << adapter.description << std::endl;
+    std::cout << "  addressName = " << adapter.addressName << std::endl;
+    std::cout << "  subnetMask  = " << adapter.subnetMask << std::endl;
+    std::cout << "  active      = " << std::boolalpha << adapter.active << std::endl;
+    std::cout << "  broadcast   = " << adapter.BroadcastAddress()->ToString() << std::endl;
+}
+
 int main()
 {
     try
     {
         Mc::NetworkSystem net;
 
+        // Print network adapters
+        auto adapters = net.QueryAdapters();
+
+        std::size_t adaptersIdx = 0;
+        for (const auto& adapter : adapters)
+            PrintNetworkAdapter(adapter, adaptersIdx);
+
+        // Print some IP addresses
         auto addrLocalhost = Mc::IPAddress::MakeIPv4Localhost();
         std::cout << "localhost = " << addrLocalhost->ToString() << std::endl;
 

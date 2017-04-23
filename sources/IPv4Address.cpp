@@ -6,6 +6,7 @@
  */
 
 #include "IPv4Address.h"
+#include "SocketUtil.h"
 #include <cstring>
 
 
@@ -34,9 +35,7 @@ IPv4Address::IPv4Address(unsigned short port, const std::string& addressName) :
 {
     addr_.sin_family    = AF_INET;
     addr_.sin_port      = ::htons(port);
-
-    if (::inet_pton(AF_INET, addressName.c_str(), &(addr_.sin_addr.s_addr)) != 1)
-        throw std::runtime_error("failed to convert IPv4 address from text to binary form: " + addressName);
+    addr_.sin_addr      = AddressNameToBinary(addressName);
 }
 
 IPv4Address::IPv4Address(const sockaddr_in& nativeHandle) :

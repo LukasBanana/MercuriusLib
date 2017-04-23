@@ -43,6 +43,7 @@ class MC_EXPORT Service
         //! Stops the running service.
         void Halt();
 
+        //! Stops the running service and runs a new service thread.
         template <class Function, class... Args>
         void Run(Function&& func, Args&&... args)
         {
