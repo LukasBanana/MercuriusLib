@@ -57,12 +57,21 @@ int main()
     {
         Mc::NetworkSystem net;
 
+        #if 0
         // Get port number
         std::cout << "Enter session port: ";
         auto port = GetInputLineAs<unsigned short>();
+        #else
+        unsigned short port = 8888;
+        #endif
 
         // Start session login
         Login login(port);
+
+        // Send request to localhost
+        auto localhostAddr = Mc::IPAddress::MakeIPv4Localhost(port);
+        std::cout << "Send login request to localhost address: " << localhostAddr->ToString() << std::endl;
+        login.SendLogin(*localhostAddr, "");
 
         // Send broadcast requests all network adapters
         for (const auto& adapter : net.QueryAdapters())
@@ -71,11 +80,6 @@ int main()
             std::cout << "Send login request to broadcast address: " << broadcastAddr->ToString() << std::endl;
             login.SendLogin(*broadcastAddr, "");
         }
-
-        // Send request to localhost
-        auto localhostAddr = Mc::IPAddress::MakeIPv4Localhost(port);
-        std::cout << "Send login request to localhost address: " << localhostAddr->ToString() << std::endl;
-        login.SendLogin(*localhostAddr, "");
 
         // Wait for responses
         const float duration = 5.0f;

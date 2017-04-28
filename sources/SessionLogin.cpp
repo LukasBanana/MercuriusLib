@@ -20,7 +20,7 @@ SessionLogin::SessionLogin(const IPAddress& portAddress) :
     /* Bind socket to address */
     sock_->SetNonBlocking(true);
     sock_->SetReuseAddress(true);
-    //sock_->SetBroadcasting(true);
+    sock_->SetBroadcasting(true);
     sock_->Bind(portAddress);
 }
 

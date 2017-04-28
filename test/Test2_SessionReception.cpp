@@ -36,6 +36,7 @@ int main()
     {
         Mc::NetworkSystem net;
 
+        #if 0
         // Get port number
         std::cout << "Enter session port: ";
         auto port = GetInputLineAs<unsigned short>();
@@ -43,6 +44,10 @@ int main()
         // Get session description
         std::cout << "Enter session description: ";
         auto sessionDesc = GetInputLine();
+        #else
+        unsigned short port = 8888;
+        std::string sessionDesc = "Hello, World";
+        #endif
 
         // Start session reception
         auto address = Mc::IPAddress::MakeIPv4(port);

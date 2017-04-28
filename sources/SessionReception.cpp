@@ -8,6 +8,8 @@
 #include <Merc/SessionReception.h>
 #include "SocketUtil.h"
 
+#include <iostream>//!!!
+
 
 namespace Mc
 {
@@ -80,6 +82,11 @@ void SessionReception::RecvLogins(long long interval)
 
         if (len >= 0 && len < g_msgMaxSize)
             msg[len] = '\0';
+
+        #if 1
+        if (len > 0)
+            std::cout << "RECEIVED: \"" << msg << '\"' << std::endl;
+        #endif
 
         /* Compare message with session */
         const auto key = g_msgPrefix + SessionKey();
