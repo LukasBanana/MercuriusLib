@@ -62,7 +62,7 @@ bool BerkeleyTCPSocket::Accept(std::unique_ptr<TCPSocket>& socket, std::unique_p
 {
     /* Accept incoming socket connection */
     sockaddr addr;
-    int addrSize = 0;
+    socklen_t addrSize = 0;
 
     auto sock = ::accept(sock_.GetNativeHandle(), &addr, &addrSize);
 

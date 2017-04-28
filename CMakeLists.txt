@@ -38,7 +38,7 @@ file(GLOB SourcesPlatformCore "${PROJECT_SOURCE_DIR}/sources/Platform/*.*")
 if(WIN32)
 	file(GLOB SourcesPlatform "${PROJECT_SOURCE_DIR}/sources/Platform/Win32/*.*")
 elseif(UNIX)
-	file(GLOB SourcesPlatform "${PROJECT_SOURCE_DIR}/sources/Platform/Linux/*.*")
+	file(GLOB SourcesPlatform "${PROJECT_SOURCE_DIR}/sources/Platform/Unix/*.*")
 endif()
 
 set(FilesAll ${HeadersAll} ${SourcesAll} ${SourcesPlatform} ${SourcesPlatformCore})

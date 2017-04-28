@@ -47,9 +47,9 @@ BerkeleySocket::~BerkeleySocket()
 {
     if (sock_ != INVALID_SOCKET)
     {
-        #ifdef _WIN32
+        #if defined(_WIN32)
         ::closesocket(sock_);
-        #else
+        #elif defined(__linux__)
         ::close(sock_);
         #endif
     }
@@ -58,7 +58,11 @@ BerkeleySocket::~BerkeleySocket()
 void BerkeleySocket::SetNonBlocking(bool enable)
 {
     unsigned long flags = (enable ? 1 : 0);
+    #ifdef _WIN32
     ::ioctlsocket(sock_, FIONBIO, &flags);
+    #else
+    ::ioctl(sock_, FIONBIO, &flags);
+    #endif
 }
 
 void BerkeleySocket::SetBroadcasting(bool enable)

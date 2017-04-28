@@ -18,15 +18,15 @@ IPv4Address::IPv4Address(unsigned short port) :
     addr_ { }
 {
     addr_.sin_family        = AF_INET;
-    addr_.sin_port          = ::htons(port);
-    addr_.sin_addr.s_addr   = ::htonl(INADDR_ANY);
+    addr_.sin_port          = htons(port);
+    addr_.sin_addr.s_addr   = htonl(INADDR_ANY);
 }
 
 IPv4Address::IPv4Address(unsigned short port, unsigned long address) :
     addr_ { }
 {
     addr_.sin_family        = AF_INET;
-    addr_.sin_port          = ::htons(port);
+    addr_.sin_port          = htons(port);
     addr_.sin_addr.s_addr   = address;
 }
 
@@ -34,7 +34,7 @@ IPv4Address::IPv4Address(unsigned short port, const std::string& addressName) :
     addr_ { }
 {
     addr_.sin_family    = AF_INET;
-    addr_.sin_port      = ::htons(port);
+    addr_.sin_port      = htons(port);
     addr_.sin_addr      = AddressNameToBinary(addressName);
 }
 
@@ -71,12 +71,12 @@ std::string IPv4Address::ToString() const
 
 unsigned short IPv4Address::Port() const
 {
-    return ::ntohs(addr_.sin_port);
+    return ntohs(addr_.sin_port);
 }
 
 void IPv4Address::Port(unsigned short port)
 {
-    addr_.sin_port = ::htons(port);
+    addr_.sin_port = htons(port);
 }
 
 const void* IPv4Address::GetNativeHandle() const

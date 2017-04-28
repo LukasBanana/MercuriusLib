@@ -13,9 +13,9 @@
 
 #include "Win32/SocketAPI.h"
 
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__APPLE__)
 
-#include "Linux/SocketAPI.h"
+#include "Unix/SocketAPI.h"
 
 #endif
 

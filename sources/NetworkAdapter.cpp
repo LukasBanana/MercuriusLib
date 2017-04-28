@@ -53,19 +53,27 @@ static void AppendBroadcast(std::string& s, unsigned char maskPart, unsigned cha
 std::unique_ptr<IPAddress> NetworkAdapter::BroadcastAddress(unsigned short port) const
 {
     /* Get address and mask from strings */
-    auto addr = AddressNameToBinary(addressName);
-    auto mask = AddressNameToBinary(subnetMask);
+    union AddrBytes
+    {
+        in_addr         ui32;
+        unsigned char   ui8[4];
+    };
+    
+    AddrBytes addr, mask;
+    
+    addr.ui32 = AddressNameToBinary(addressName);
+    mask.ui32 = AddressNameToBinary(subnetMask);
 
     /* Get broad cast IP address */
     std::string broadcastAddr;
 
-    AppendBroadcast(broadcastAddr, mask.S_un.S_un_b.s_b1, addr.S_un.S_un_b.s_b1);
+    AppendBroadcast(broadcastAddr, mask.ui8[0], addr.ui8[0]);
     broadcastAddr += ".";
-    AppendBroadcast(broadcastAddr, mask.S_un.S_un_b.s_b2, addr.S_un.S_un_b.s_b2);
+    AppendBroadcast(broadcastAddr, mask.ui8[1], addr.ui8[1]);
     broadcastAddr += ".";
-    AppendBroadcast(broadcastAddr, mask.S_un.S_un_b.s_b3, addr.S_un.S_un_b.s_b3);
+    AppendBroadcast(broadcastAddr, mask.ui8[2], addr.ui8[2]);
     broadcastAddr += ".";
-    AppendBroadcast(broadcastAddr, mask.S_un.S_un_b.s_b4, addr.S_un.S_un_b.s_b4);
+    AppendBroadcast(broadcastAddr, mask.ui8[3], addr.ui8[3]);
 
     return IPAddress::MakeIPv4(port, broadcastAddr);
 }
