@@ -13,15 +13,15 @@ namespace Mc
 {
 
 
-SessionLogin::SessionLogin(const IPAddress& portAddress) :
-    sock_    { UDPSocket::Make(portAddress.Family()) },
-    address_ { IPAddress::Make(portAddress.Family()) }
+SessionLogin::SessionLogin(const AddressFamily family) :
+    sock_    { UDPSocket::Make(family) },
+    address_ { IPAddress::Make(family) }
 {
     /* Bind socket to address */
     sock_->SetNonBlocking(true);
     sock_->SetReuseAddress(true);
     sock_->SetBroadcasting(true);
-    sock_->Bind(portAddress);
+    sock_->Bind(*address_);
 }
 
 SessionLogin::~SessionLogin()
@@ -38,18 +38,23 @@ void SessionLogin::SendLogin(const IPAddress& address, const std::string& sessio
     /* Send and check for completion */
     if (sock_->Send(msg, address) != static_cast<int>(msg.size()))
     {
-        throw std::runtime_error("failed to send session login");
+        throw std::runtime_error("failed to send session login to " + address.ToString());
     }
 }
 
-void SessionLogin::RecvResponse()
+bool SessionLogin::RecvResponse()
 {
     /* Receive response from session reception host */
     std::string msg;
     msg.resize(static_cast<std::size_t>(g_msgMaxSize));
 
     if (sock_->Recv(msg, *address_) > 0)
+    {
         OnResponse(*address_, msg);
+        return true;
+    }
+
+    return false;
 }
 
 

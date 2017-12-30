@@ -26,12 +26,12 @@ class MC_EXPORT SessionLogin
 
     public:
 
-        SessionLogin(const IPAddress& portAddress);
+        SessionLogin(const AddressFamily family = AddressFamily::IPv4);
         virtual ~SessionLogin();
 
         void SendLogin(const IPAddress& address, const std::string& sessionKey);
 
-        void RecvResponse();
+        bool RecvResponse();
 
     protected:
 

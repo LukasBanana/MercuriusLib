@@ -33,13 +33,6 @@ T GetInputLineAs()
 class Login : public Mc::SessionLogin
 {
 
-public:
-        
-    Login(unsigned short port) :
-        Mc::SessionLogin { *Mc::IPAddress::MakeIPv4(port) }
-    {
-    }
-
 private:
 
     void OnResponse(const Mc::IPAddress& address, const std::string& sessionDesc) override
@@ -66,7 +59,7 @@ int main()
         #endif
 
         // Start session login
-        Login login { port };
+        Login login;
 
         // Send request to localhost
         auto localhostAddr = Mc::IPAddress::MakeIPv4Localhost(port);
@@ -76,9 +69,16 @@ int main()
         // Send broadcast requests all network adapters
         for (const auto& adapter : net.QueryAdapters())
         {
-            auto broadcastAddr = adapter.BroadcastAddress(port);
-            std::cout << "Send login request to broadcast address: " << broadcastAddr->ToString() << std::endl;
-            login.SendLogin(*broadcastAddr, "");
+            try
+            {
+                auto broadcastAddr = adapter.BroadcastAddress(port);
+                std::cout << "Send login request to broadcast address: " << broadcastAddr->ToString() << std::endl;
+                login.SendLogin(*broadcastAddr, "");
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << e.what() << std::endl;
+            }
         }
 
         // Wait for responses

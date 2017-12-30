@@ -83,16 +83,18 @@ void SessionReception::RecvLogins(long long interval)
             auto len = sock_->Recv(msg, g_msgMaxSize, *address_);
 
             if (len >= 0 && len < g_msgMaxSize)
+            {
                 msg[len] = '\0';
 
-            /* Compare message with session */
-            const auto key = g_msgPrefix + SessionKey();
-            if (key.compare(msg) == 0)
-            {
-                /* Send login response and add copy of address to list */
-                std::lock_guard<std::mutex> guard { sessionMutex_ };
-                sock_->Send(sessionDesc_, *address_);
-                loginAddresses_.push(address_->Copy());
+                /* Compare message with session */
+                const auto key = g_msgPrefix + SessionKey();
+                if (key.compare(msg) == 0)
+                {
+                    /* Send login response and add copy of address to list */
+                    std::lock_guard<std::mutex> guard { sessionMutex_ };
+                    sock_->Send(sessionDesc_, *address_);
+                    loginAddresses_.push(address_->Copy());
+                }
             }
 
             /* Wait a moment (100ms) to give the other threads time to run */

@@ -52,8 +52,12 @@ void BerkeleyUDPSocket::Bind(const IPAddress& address)
 
 int BerkeleyUDPSocket::Send(const char* data, int dataSize, const IPAddress& address)
 {
+    /* Send network message to specified destination address */
     return ::sendto(
-        sock_.GetNativeHandle(), data, dataSize, 0,
+        sock_.GetNativeHandle(),
+        data,
+        dataSize,
+        0,
         reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
         address.GetNativeHandleSize()
     );
@@ -61,15 +65,24 @@ int BerkeleyUDPSocket::Send(const char* data, int dataSize, const IPAddress& add
 
 int BerkeleyUDPSocket::Recv(char* data, int dataSize, IPAddress& address)
 {
-    sockaddr addr;
-    socklen_t addrSize = address.GetNativeHandleSize();
+    /* Receive network message from unknown source address */
+    sockaddr_storage addr;
+    socklen_t addrSize = sizeof(addr);
 
-    auto result = ::recvfrom(sock_.GetNativeHandle(), data, dataSize, 0, &addr, &addrSize);
+    auto result = ::recvfrom(
+        sock_.GetNativeHandle(),
+        data,
+        dataSize,
+        0,
+        reinterpret_cast<sockaddr*>(&addr),
+        &addrSize
+    );
 
+    /* Copy source address to output parameter */
     if (result > 0)
     {
         if (addrSize == address.GetNativeHandleSize())
-            memcpy(reinterpret_cast<char*>(address.GetNativeHandle()), &addr, addrSize);
+            memcpy(address.GetNativeHandle(), &addr, static_cast<std::size_t>(addrSize));
         else
             throw std::runtime_error("socket address size mismatch when receiving data from UDP/IP socket");
     }
