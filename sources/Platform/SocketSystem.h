@@ -31,6 +31,8 @@ void CleanUp();
 
 std::vector<NetworkAdapter> QueryAdapters();
 
+std::string LastErrorToString();
+
 
 } // /namespace Mc
 

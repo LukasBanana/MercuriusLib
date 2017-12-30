@@ -6,6 +6,7 @@
  */
 
 #include "BerkeleyUDPSocket.h"
+#include "Platform/SocketSystem.h"
 
 
 namespace Mc
@@ -61,7 +62,7 @@ int BerkeleyUDPSocket::Send(const char* data, int dataSize, const IPAddress& add
 int BerkeleyUDPSocket::Recv(char* data, int dataSize, IPAddress& address)
 {
     sockaddr addr;
-    socklen_t addrSize = 0;
+    socklen_t addrSize = address.GetNativeHandleSize();
 
     auto result = ::recvfrom(sock_.GetNativeHandle(), data, dataSize, 0, &addr, &addrSize);
 

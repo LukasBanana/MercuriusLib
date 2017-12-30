@@ -66,7 +66,7 @@ int main()
         #endif
 
         // Start session login
-        Login login(port);
+        Login login { port };
 
         // Send request to localhost
         auto localhostAddr = Mc::IPAddress::MakeIPv4Localhost(port);

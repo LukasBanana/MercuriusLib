@@ -73,33 +73,37 @@ std::unique_ptr<IPAddress> SessionReception::PollLoginAddress()
 
 void SessionReception::RecvLogins(long long interval)
 {
-    char msg[g_msgMaxSize];
-
-    while (Running())
+    try
     {
-        /* Receive next login request */
-        auto len = sock_->Recv(msg, g_msgMaxSize, *address_);
+        char msg[g_msgMaxSize];
 
-        if (len >= 0 && len < g_msgMaxSize)
-            msg[len] = '\0';
-
-        #if 1
-        if (len > 0)
-            std::cout << "RECEIVED: \"" << msg << '\"' << std::endl;
-        #endif
-
-        /* Compare message with session */
-        const auto key = g_msgPrefix + SessionKey();
-        if (key.compare(msg) == 0)
+        while (Running())
         {
-            /* Send login response and add copy of address to list */
-            std::lock_guard<std::mutex> guard { sessionMutex_ };
-            sock_->Send(sessionDesc_, *address_);
-            loginAddresses_.push(address_->Copy());
-        }
+            /* Receive next login request */
+            auto len = sock_->Recv(msg, g_msgMaxSize, *address_);
 
-        /* Wait a moment (100ms) to give the other threads time to run */
-        std::this_thread::sleep_for(std::chrono::milliseconds(interval));
+            if (len >= 0 && len < g_msgMaxSize)
+                msg[len] = '\0';
+
+            /* Compare message with session */
+            const auto key = g_msgPrefix + SessionKey();
+            if (key.compare(msg) == 0)
+            {
+                /* Send login response and add copy of address to list */
+                std::lock_guard<std::mutex> guard { sessionMutex_ };
+                sock_->Send(sessionDesc_, *address_);
+                loginAddresses_.push(address_->Copy());
+            }
+
+            /* Wait a moment (100ms) to give the other threads time to run */
+            std::this_thread::sleep_for(std::chrono::milliseconds(interval));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        #if 1//!!!
+        std::cerr << "SessionReception::RecvLogins: " << e.what() << std::endl;
+        #endif
     }
 }
 

@@ -51,7 +51,7 @@ int main()
 
         // Start session reception
         auto address = Mc::IPAddress::MakeIPv4(port);
-        Mc::SessionReception reception(*address, sessionDesc, "");
+        Mc::SessionReception reception { *address, sessionDesc, "" };
 
         // Wait for logins
         std::cout << "Waiting for login attempts ..." << std::endl;

@@ -29,15 +29,30 @@ std::string ToHexString(T i)
     return s.str();
 }
 
-static std::string WSAStartupErrorToString(int errorCode)
+// -> WSAGetLastError()
+// see also: https://msdn.microsoft.com/en-us/library/windows/desktop/ms740120(v=vs.85).aspx
+static std::string WSAErrorToString(int errorCode)
 {
     switch (errorCode)
     {
+        case WSANOTINITIALISED:     return "network subsystem not initialised";
+        case WSAENETDOWN:           return "network subsystem failed";
+        case WSAEFAULT:             return "bad memory address";
+        case WSAEINTR:              return "blocking call was canceled";
+        case WSAEINPROGRESS:        return "blocking operation in progress";
+        case WSAEINVAL:             return "socket not bound or unknown flag";
+        case WSAEISCONN:            return "function not permitted with connected socket";
+        case WSAENETRESET:          return "time to live expired";
+        case WSAENOTSOCK:           return "invalid socket descriptor";
+        case WSAEOPNOTSUPP:         return "invalid stream socket";
+        case WSAESHUTDOWN:          return "socket has been shutdown";
+        case WSAEWOULDBLOCK:        return "blocking operation in non-blocking socket";
+        case WSAEMSGSIZE:           return "message size overflow";
+        case WSAETIMEDOUT:          return "connection droped";
+        case WSAECONNRESET:         return "virtual circuit reset";
         case WSASYSNOTREADY:        return "network subsystem is unavailable";
         case WSAVERNOTSUPPORTED:    return "Winsock.dll version out of range";
-        case WSAEINPROGRESS:        return "blocking operation in progress";
         case WSAEPROCLIM:           return "maximum tasks reached";
-        case WSAEFAULT:             return "bad memory address";
         default:                    return "unknown error code (" + ToHexString(errorCode) + ")";
     }
 }
@@ -83,7 +98,7 @@ void StartUp(StartUpInfo* info)
     const int err = WSAStartup(versionRequest, &winSockData);
 
     if (err)
-        throw std::runtime_error("WinSock startup error: " + WSAStartupErrorToString(err));
+        throw std::runtime_error("WinSock startup error: " + WSAErrorToString(err));
 
     if (info)
     {
@@ -136,6 +151,12 @@ std::vector<NetworkAdapter> QueryAdapters()
     }
 
     return adapters;
+}
+
+std::string LastErrorToString()
+{
+    auto err = WSAGetLastError();
+    return (err != 0 ? WSAErrorToString(err) : "");
 }
 
 

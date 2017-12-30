@@ -31,7 +31,15 @@ SessionLogin::~SessionLogin()
 
 void SessionLogin::SendLogin(const IPAddress& address, const std::string& sessionKey)
 {
-    sock_->Send(g_msgPrefix + sessionKey, address);
+    /* Build actual login message */
+    std::string msg = g_msgPrefix;
+    msg += sessionKey;
+
+    /* Send and check for completion */
+    if (sock_->Send(msg, address) != static_cast<int>(msg.size()))
+    {
+        throw std::runtime_error("failed to send session login");
+    }
 }
 
 void SessionLogin::RecvResponse()

@@ -55,26 +55,52 @@ BerkeleySocket::~BerkeleySocket()
     }
 }
 
+static void SetSocketCtrlOrThrow(SOCKET sock, unsigned long cmd, unsigned long* arg)
+{
+    #ifdef _WIN32
+    if (::ioctlsocket(sock, static_cast<long>(cmd), arg) != 0)
+    {
+        throw std::runtime_error("<ioctrlsocket> failed");
+    }
+    #else
+    if (::ioctl(sock, cmd, arg) != 0)
+    {
+        throw std::runtime_error("<ioctrl> failed");
+    }
+    #endif
+}
+
+static void SetSocketOptOrThrow(SOCKET sock, int level, int param, const void* value, size_t valueSize)
+{
+    #ifdef _WIN32
+    if (::setsockopt(sock, level, param, reinterpret_cast<const char*>(value), static_cast<int>(valueSize)) != 0)
+    {
+        throw std::runtime_error("<setsockopt> failed");
+    }
+    #else
+    if (::setsockopt(sock, level, param, value, static_cast<socklen_t>(valueSize)) != 0)
+    {
+        throw std::runtime_error("<setsockopt> failed");
+    }
+    #endif
+}
+
 void BerkeleySocket::SetNonBlocking(bool enable)
 {
     unsigned long flags = (enable ? 1 : 0);
-    #ifdef _WIN32
-    ::ioctlsocket(sock_, FIONBIO, &flags);
-    #else
-    ::ioctl(sock_, FIONBIO, &flags);
-    #endif
+    SetSocketCtrlOrThrow(sock_, FIONBIO, &flags);
 }
 
 void BerkeleySocket::SetBroadcasting(bool enable)
 {
     char flags = (enable ? 1 : 0);
-    ::setsockopt(sock_, SOL_SOCKET, SO_BROADCAST, &flags, sizeof(flags));
+    SetSocketOptOrThrow(sock_, SOL_SOCKET, SO_BROADCAST, &flags, sizeof(flags));
 }
 
 void BerkeleySocket::SetReuseAddress(bool enable)
 {
     char flags = (enable ? 1 : 0);
-    ::setsockopt(sock_, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags));
+    SetSocketOptOrThrow(sock_, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags));
 }
 
 

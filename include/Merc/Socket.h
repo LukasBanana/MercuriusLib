@@ -16,6 +16,7 @@ namespace Mc
 {
 
 
+//! Socket type enumeration: Stream, Datagram, Raw.
 enum class SocketType
 {
     Stream,     //!< Sequenced, reliable, two-way, connection-based byte streams.
@@ -23,6 +24,7 @@ enum class SocketType
     Raw,        //!< Raw network protocol access.
 };
 
+//! Socket protocol type enumeration: TCP, UDP.
 enum class SocketProtocol
 {
     TCP, //!< Transmission Control Protocol (TCP).
@@ -39,8 +41,10 @@ class MC_EXPORT Socket
         //! Specifies whether to set the socket into non-blocking (true) or blocking (false) state.
         virtual void SetNonBlocking(bool enable) = 0;
 
+        //! Enables or disbales broadcasting mode.
         virtual void SetBroadcasting(bool enable) = 0;
 
+        //! Enables or disables re-use of the socket address.
         virtual void SetReuseAddress(bool enable) = 0;
 
         //! Returns the socket type.
