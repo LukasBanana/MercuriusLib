@@ -41,10 +41,10 @@ class MC_EXPORT TCPSocket : public Socket
         virtual void Connect(const IPAddress& address) = 0;
 
         //! Sends the specified byte buffer over this socket and returns the number of bytes actually send.
-        virtual int Send(const char* data, int dataSize) = 0;
+        virtual int Send(const void* data, std::size_t dataSize) = 0;
 
         //! Receives a byte buffer with the specified maximal bytes and returns the number of actually received bytes.
-        virtual int Recv(char* data, int dataSize) = 0;
+        virtual int Recv(void* data, std::size_t dataSize) = 0;
 
         //! Sends the specified string over this socket and returns the number of bytes actually send.
         int Send(const std::string& s);

@@ -31,6 +31,7 @@ class MC_EXPORT SessionLogin
 
         void SendLogin(const IPAddress& address, const std::string& sessionKey);
 
+        // Receives all login responses and returns true if a response has been received.
         bool RecvResponse();
 
     protected:

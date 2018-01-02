@@ -32,10 +32,10 @@ class MC_EXPORT UDPSocket : public Socket
         virtual void Bind(const IPAddress& address) = 0;
 
         //! Sends the specified byte buffer over this socket and returns the number of bytes actually send.
-        virtual int Send(const char* data, int dataSize, const IPAddress& address) = 0;
+        virtual int Send(const void* data, std::size_t dataSize, const IPAddress& address) = 0;
 
         //! Receives a byte buffer with the specified maximal bytes and returns the number of actually received bytes.
-        virtual int Recv(char* data, int dataSize, IPAddress& address) = 0;
+        virtual int Recv(void* data, std::size_t dataSize, IPAddress& address) = 0;
 
         //! Sends the specified string over this socket and returns the number of bytes actually send.
         int Send(const std::string& s, const IPAddress& address);

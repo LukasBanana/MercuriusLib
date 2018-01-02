@@ -31,8 +31,8 @@ class BerkeleyUDPSocket : public UDPSocket
 
         void Bind(const IPAddress& address) override;
 
-        int Send(const char* data, int dataSize, const IPAddress& address) override;
-        int Recv(char* data, int dataSize, IPAddress& address) override;
+        int Send(const void* data, std::size_t dataSize, const IPAddress& address) override;
+        int Recv(void* data, std::size_t dataSize, IPAddress& address) override;
 
     private:
 

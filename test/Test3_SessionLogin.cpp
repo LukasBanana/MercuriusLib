@@ -40,6 +40,18 @@ private:
         std::cout << "Received login response from:" << std::endl;
         std::cout << "  Host                = " << address.ToString() << std::endl;
         std::cout << "  Session Description = \"" << sessionDesc << '\"' << std::endl;
+
+        // send message to server
+        auto sock = Mc::UDPSocket::Make(address.Family());
+        auto sockAddr = Mc::IPAddress::Make(address.Family());
+
+        sock->SetNonBlocking(true);
+        sock->SetReuseAddress(true);
+        sock->Bind(*sockAddr);
+
+        sockAddr = address.Copy();
+        sockAddr->Port(sockAddr->Port() + 1);
+        sock->Send("Foo bar", *sockAddr);
     }
 
 };

@@ -51,16 +51,33 @@ int main()
 
         // Start session reception
         auto address = Mc::IPAddress::MakeIPv4(port);
-        Mc::SessionReception reception { *address, sessionDesc, "" };
+        Mc::SessionReception reception { *address, sessionDesc, "", true };
 
         // Wait for logins
         std::cout << "Waiting for login attempts ..." << std::endl;
+
+        // Create socket for messages
+        auto sock = Mc::UDPSocket::Make(address->Family());
+        auto sockAddr = Mc::IPAddress::Make(address->Family(), port + 1);
+
+        sock->SetNonBlocking(true);
+        sock->SetReuseAddress(true);
+        sock->Bind(*sockAddr);
 
         while (true)
         {
             // Poll login attempts
             while (auto address = reception.PollLoginAddress())
                 std::cout << "Login attempt: " << address->ToString() << std::endl;
+
+            // Receive messages
+            std::string s;
+            s.resize(512);
+            if (sock->Recv(s, *sockAddr) > 0)
+            {
+                if (!s.empty())
+                    std::cout << "Message received: " << s << std::endl;
+            }
 
             // Wait a moment
             std::this_thread::sleep_for(std::chrono::milliseconds(100));

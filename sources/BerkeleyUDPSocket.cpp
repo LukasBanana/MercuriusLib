@@ -50,20 +50,20 @@ void BerkeleyUDPSocket::Bind(const IPAddress& address)
         throw std::runtime_error("failed to bind UDP/IP socket to address: " + address.ToString());
 }
 
-int BerkeleyUDPSocket::Send(const char* data, int dataSize, const IPAddress& address)
+int BerkeleyUDPSocket::Send(const void* data, std::size_t dataSize, const IPAddress& address)
 {
     /* Send network message to specified destination address */
     return ::sendto(
         sock_.GetNativeHandle(),
-        data,
-        dataSize,
+        reinterpret_cast<const char*>(data),
+        static_cast<int>(dataSize),
         0,
         reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
         address.GetNativeHandleSize()
     );
 }
 
-int BerkeleyUDPSocket::Recv(char* data, int dataSize, IPAddress& address)
+int BerkeleyUDPSocket::Recv(void* data, std::size_t dataSize, IPAddress& address)
 {
     /* Receive network message from unknown source address */
     sockaddr_storage addr;
@@ -71,8 +71,8 @@ int BerkeleyUDPSocket::Recv(char* data, int dataSize, IPAddress& address)
 
     auto result = ::recvfrom(
         sock_.GetNativeHandle(),
-        data,
-        dataSize,
+        reinterpret_cast<char*>(data),
+        static_cast<int>(dataSize),
         0,
         reinterpret_cast<sockaddr*>(&addr),
         &addrSize

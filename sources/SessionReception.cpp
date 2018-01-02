@@ -15,11 +15,12 @@ namespace Mc
 {
 
 
-SessionReception::SessionReception(const IPAddress& address, const std::string& sessionDesc, const std::string& sessionKey) :
-    sock_        { UDPSocket::Make(address.Family())                 },
-    address_     { IPAddress::Make(address.Family(), address.Port()) },
-    sessionDesc_ { sessionDesc                                       },
-    sessionKey_  { sessionKey                                        }
+SessionReception::SessionReception(const IPAddress& address, const std::string& sessionDesc, const std::string& sessionKey, bool recordLogins) :
+    sock_         { UDPSocket::Make(address.Family())                 },
+    address_      { IPAddress::Make(address.Family(), address.Port()) },
+    sessionDesc_  { sessionDesc                                       },
+    sessionKey_   { sessionKey                                        },
+    recordLogins_ { recordLogins                                      }
 {
     /* Bind socket to address */
     sock_->SetNonBlocking(true);
@@ -92,8 +93,9 @@ void SessionReception::RecvLogins(long long interval)
                 {
                     /* Send login response and add copy of address to list */
                     std::lock_guard<std::mutex> guard { sessionMutex_ };
-                    sock_->Send(sessionDesc_, *address_);
-                    loginAddresses_.push(address_->Copy());
+                    sock_->Send(g_msgPrefix + sessionDesc_, *address_);
+                    if (recordLogins_)
+                        loginAddresses_.push(address_->Copy());
                 }
             }
 

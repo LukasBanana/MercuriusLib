@@ -50,7 +50,7 @@ bool SessionLogin::RecvResponse()
 
     if (sock_->Recv(msg, *address_) > 0)
     {
-        OnResponse(*address_, msg);
+        OnResponse(*address_, msg.substr(1));
         return true;
     }
 

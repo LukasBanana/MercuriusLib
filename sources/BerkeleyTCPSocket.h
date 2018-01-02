@@ -34,8 +34,8 @@ class BerkeleyTCPSocket : public TCPSocket
         bool Accept(std::unique_ptr<TCPSocket>& socket, std::unique_ptr<IPAddress>& address) override;
         void Connect(const IPAddress& address) override;
 
-        int Send(const char* data, int dataSize) override;
-        int Recv(char* data, int dataSize) override;
+        int Send(const void* data, std::size_t dataSize) override;
+        int Recv(void* data, std::size_t dataSize) override;
 
     private:
 

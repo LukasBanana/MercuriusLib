@@ -102,14 +102,24 @@ void BerkeleyTCPSocket::Connect(const IPAddress& address)
         throw std::runtime_error("failed to connect TCP/IP socket to address: " + address.ToString());
 }
 
-int BerkeleyTCPSocket::Send(const char* data, int dataSize)
+int BerkeleyTCPSocket::Send(const void* data, std::size_t dataSize)
 {
-    return ::send(sock_.GetNativeHandle(), data, dataSize, 0);
+    return ::send(
+        sock_.GetNativeHandle(),
+        reinterpret_cast<const char*>(data),
+        static_cast<int>(dataSize),
+        0
+    );
 }
 
-int BerkeleyTCPSocket::Recv(char* data, int dataSize)
+int BerkeleyTCPSocket::Recv(void* data, std::size_t dataSize)
 {
-    return ::recv(sock_.GetNativeHandle(), data, dataSize, 0);
+    return ::recv(
+        sock_.GetNativeHandle(),
+        reinterpret_cast<char*>(data),
+        static_cast<int>(dataSize),
+        0
+    );
 }
 
 

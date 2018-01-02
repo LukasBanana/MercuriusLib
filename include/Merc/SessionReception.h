@@ -28,7 +28,7 @@ class MC_EXPORT SessionReception final : private Service
         SessionReception(const SessionReception&) = delete;
         SessionReception& operator = (const SessionReception&) = delete;
 
-        SessionReception(const IPAddress& address, const std::string& sessionDesc, const std::string& sessionKey);
+        SessionReception(const IPAddress& address, const std::string& sessionDesc, const std::string& sessionKey, bool recordLogins = false);
 
         void SetSessionKey(const std::string& s);
         std::string SessionKey() const;
@@ -51,6 +51,7 @@ class MC_EXPORT SessionReception final : private Service
         std::string                             sessionDesc_;
         std::string                             sessionKey_;
         std::queue<std::unique_ptr<IPAddress>>  loginAddresses_;
+        bool                                    recordLogins_   = false;
         // }
 
 };
