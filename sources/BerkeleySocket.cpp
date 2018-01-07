@@ -70,7 +70,7 @@ static void SetSocketCtrlOrThrow(SOCKET sock, unsigned long cmd, unsigned long* 
     #endif
 }
 
-static void SetSocketOptOrThrow(SOCKET sock, int level, int param, const void* value, size_t valueSize)
+static void SetSocketOptOrThrow(SOCKET sock, int level, int param, const void* value, std::size_t valueSize)
 {
     #ifdef _WIN32
     if (::setsockopt(sock, level, param, reinterpret_cast<const char*>(value), static_cast<int>(valueSize)) != 0)
@@ -93,13 +93,13 @@ void BerkeleySocket::SetNonBlocking(bool enable)
 
 void BerkeleySocket::SetBroadcasting(bool enable)
 {
-    char flags = (enable ? 1 : 0);
+    int flags = (enable ? 1 : 0);
     SetSocketOptOrThrow(sock_, SOL_SOCKET, SO_BROADCAST, &flags, sizeof(flags));
 }
 
 void BerkeleySocket::SetReuseAddress(bool enable)
 {
-    char flags = (enable ? 1 : 0);
+    int flags = (enable ? 1 : 0);
     SetSocketOptOrThrow(sock_, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags));
 }
 
