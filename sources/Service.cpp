@@ -14,9 +14,7 @@ namespace Mc
 
 Service::~Service()
 {
-    running_ = false;
-    if (thread_.joinable())
-        thread_.detach();
+    Halt();
 }
 
 void Service::Halt()
