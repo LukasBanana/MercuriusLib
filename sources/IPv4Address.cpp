@@ -49,7 +49,7 @@ AddressFamily IPv4Address::Family() const
     return AddressFamily::IPv4;
 }
 
-std::string IPv4Address::ToString() const
+std::string IPv4Address::ToString(long flags) const
 {
     std::string s;
     char buf[16];
@@ -58,11 +58,14 @@ std::string IPv4Address::ToString() const
     {
         s = ptr;
 
-        auto port = Port();
-        if (port > 0)
+        if ((flags & AppendPort) != 0)
         {
-            s += ':';
-            s += std::to_string(port);
+            auto port = Port();
+            if (port > 0)
+            {
+                s += ':';
+                s += std::to_string(port);
+            }
         }
     }
 

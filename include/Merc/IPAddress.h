@@ -19,6 +19,12 @@ namespace Mc
 {
 
 
+// Flags for the IPAddress class.
+enum IPAddressFlags
+{
+    AppendPort = (1 << 0), // Appends the port to the IP address for the 'ToString' function.
+};
+
 //! Address family enumeration.
 enum class AddressFamily
 {
@@ -45,8 +51,8 @@ class MC_EXPORT IPAddress
         //! Returns the address family.
         virtual AddressFamily Family() const = 0;
 
-        //! Returns this address as human readable string.
-        virtual std::string ToString() const = 0;
+        //! Returns this address as human readable string (see IPAddressFlag).
+        virtual std::string ToString(long flags = 0) const = 0;
 
         //! Returns the port number.
         virtual unsigned short Port() const = 0;

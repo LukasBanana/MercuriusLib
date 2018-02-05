@@ -29,7 +29,7 @@ class IPv4Address : public IPAddress
 
         AddressFamily Family() const override;
 
-        std::string ToString() const override;
+        std::string ToString(long flags = 0) const override;
 
         unsigned short Port() const override;
         void Port(unsigned short port) override;
