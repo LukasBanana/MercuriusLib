@@ -56,6 +56,27 @@ int main()
         for (const auto& adapter : adapters)
             PrintNetworkAdapter(adapter, adaptersIdx);
 
+        // Sort addresses
+        std::vector<std::unique_ptr<Mc::IPAddress>> address;
+        for (const auto& adapter : adapters)
+            address.emplace_back(Mc::IPAddress::MakeIPv4(0, adapter.addressName));
+
+        std::cout << "unsorted addresses:" << std::endl;
+        for (const auto& addr : address)
+            std::cout << "  " << addr->ToString() << std::endl;
+
+        std::sort(
+            address.begin(), address.end(),
+            [](const std::unique_ptr<Mc::IPAddress>& lhs, const std::unique_ptr<Mc::IPAddress>& rhs)
+            {
+                return (*lhs > *rhs);
+            }
+        );
+
+        std::cout << "sorted addresses:" << std::endl;
+        for (const auto& addr : address)
+            std::cout << "  " << addr->ToString() << std::endl;
+
         // Print some IP addresses
         auto addrLocalhost = Mc::IPAddress::MakeIPv4Localhost();
         std::cout << "localhost = " << addrLocalhost->ToString() << std::endl;

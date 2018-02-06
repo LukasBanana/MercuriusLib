@@ -32,6 +32,7 @@ enum class AddressFamily
     IPv6, //!< IPv6 Internet protocols.
 };
 
+//! Internet Protocol (IP) address interface.
 class MC_EXPORT IPAddress
 {
 
@@ -72,7 +73,18 @@ class MC_EXPORT IPAddress
         //! Returns a copy of this address instance.
         virtual std::unique_ptr<IPAddress> Copy() const = 0;
 
+        //! Returns a signed comparison value for a strict-weak-order (SWO).
+        virtual int CompareSWO(const IPAddress& rhs) const = 0;
+
 };
+
+
+MC_EXPORT bool operator == (const IPAddress& lhs, const IPAddress& rhs);
+MC_EXPORT bool operator != (const IPAddress& lhs, const IPAddress& rhs);
+MC_EXPORT bool operator < (const IPAddress& lhs, const IPAddress& rhs);
+MC_EXPORT bool operator <= (const IPAddress& lhs, const IPAddress& rhs);
+MC_EXPORT bool operator > (const IPAddress& lhs, const IPAddress& rhs);
+MC_EXPORT bool operator >= (const IPAddress& lhs, const IPAddress& rhs);
 
 
 } // /namespace Mc

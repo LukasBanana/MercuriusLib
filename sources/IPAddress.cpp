@@ -15,17 +15,17 @@ namespace Mc
 
 std::unique_ptr<IPAddress> IPAddress::MakeIPv4(unsigned short port)
 {
-    return std::unique_ptr<IPAddress>(new IPv4Address(port));
+    return std::unique_ptr<IPAddress> { new IPv4Address(port) };
 }
 
 std::unique_ptr<IPAddress> IPAddress::MakeIPv4(unsigned short port, unsigned long address)
 {
-    return std::unique_ptr<IPAddress>(new IPv4Address(port, address));
+    return std::unique_ptr<IPAddress> { new IPv4Address(port, address) };
 }
 
 std::unique_ptr<IPAddress> IPAddress::MakeIPv4(unsigned short port, const std::string& addressName)
 {
-    return std::unique_ptr<IPAddress>(new IPv4Address(port, addressName));
+    return std::unique_ptr<IPAddress> { new IPv4Address(port, addressName) };
 }
 
 std::unique_ptr<IPAddress> IPAddress::MakeIPv4Localhost(unsigned short port)
@@ -64,7 +64,7 @@ std::vector<std::unique_ptr<IPAddress>> IPAddress::QueryAddressesFromHost(const 
                 {
                     addresses.emplace_back(
                         std::unique_ptr<IPv4Address>(
-                            new IPv4Address(*reinterpret_cast<const sockaddr_in*>(ptr->ai_addr))
+                            new IPv4Address { *reinterpret_cast<const sockaddr_in*>(ptr->ai_addr) }
                         )
                     );
                 }
@@ -87,6 +87,37 @@ std::vector<std::unique_ptr<IPAddress>> IPAddress::QueryAddressesFromHost(const 
 
 IPAddress::~IPAddress()
 {
+}
+
+
+MC_EXPORT bool operator == (const IPAddress& lhs, const IPAddress& rhs)
+{
+    return (lhs.CompareSWO(rhs) == 0);
+}
+
+MC_EXPORT bool operator != (const IPAddress& lhs, const IPAddress& rhs)
+{
+    return (lhs.CompareSWO(rhs) != 0);
+}
+
+MC_EXPORT bool operator < (const IPAddress& lhs, const IPAddress& rhs)
+{
+    return (lhs.CompareSWO(rhs) < 0);
+}
+
+MC_EXPORT bool operator <= (const IPAddress& lhs, const IPAddress& rhs)
+{
+    return (lhs.CompareSWO(rhs) <= 0);
+}
+
+MC_EXPORT bool operator > (const IPAddress& lhs, const IPAddress& rhs)
+{
+    return (lhs.CompareSWO(rhs) > 0);
+}
+
+MC_EXPORT bool operator >= (const IPAddress& lhs, const IPAddress& rhs)
+{
+    return (lhs.CompareSWO(rhs) >= 0);
 }
 
 

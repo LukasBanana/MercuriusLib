@@ -41,6 +41,8 @@ class IPv4Address : public IPAddress
 
         std::unique_ptr<IPAddress> Copy() const override;
 
+        int CompareSWO(const IPAddress& rhs) const override;
+
     private:
 
         sockaddr_in addr_;

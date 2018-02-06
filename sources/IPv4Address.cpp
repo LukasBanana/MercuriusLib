@@ -99,7 +99,36 @@ int IPv4Address::GetNativeHandleSize() const
 
 std::unique_ptr<IPAddress> IPv4Address::Copy() const
 {
-    return std::unique_ptr<IPAddress>(new IPv4Address(addr_));
+    return std::unique_ptr<IPAddress> { new IPv4Address { addr_ } };
+}
+
+static int Sign(int x)
+{
+    if (x < 0) return -1;
+    if (x > 0) return +1;
+               return  0;
+}
+
+int IPv4Address::CompareSWO(const IPAddress& rhs) const
+{
+    switch (rhs.Family())
+    {
+        case AddressFamily::IPv4:
+        {
+            const auto& rhsIPv4 = static_cast<const IPv4Address&>(rhs);
+            auto s0 = reinterpret_cast<const char*>(&(addr_.sin_addr));
+            auto s1 = reinterpret_cast<const char*>(&(rhsIPv4.addr_.sin_addr));
+            return Sign(std::strncmp(s0, s1, 4));
+        }
+        break;
+
+        case AddressFamily::IPv6:
+        {
+            //TODO...
+        }
+        break;
+    }
+    return 0;
 }
 
 
