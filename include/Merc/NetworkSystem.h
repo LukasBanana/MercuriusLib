@@ -23,7 +23,7 @@ class MC_EXPORT NetworkSystem
     public:
 
         NetworkSystem();
-        ~NetworkSystem();
+        virtual ~NetworkSystem();
 
         //! Returns the list of all network adapters.
         std::vector<NetworkAdapter> QueryAdapters() const;
