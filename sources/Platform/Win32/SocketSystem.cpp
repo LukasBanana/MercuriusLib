@@ -93,7 +93,7 @@ void StartUp(StartUpInfo* info)
 {
     /* Windows socket startup */
     const WORD versionRequest = MAKEWORD(2, 2);
-    
+
     WSADATA winSockData;
     const int err = WSAStartup(versionRequest, &winSockData);
 
@@ -122,20 +122,20 @@ std::vector<NetworkAdapter> QueryAdapters()
 
     std::vector<char> adapterInfoBuffer(bufferSize);
     auto adapterInfo = reinterpret_cast<IP_ADAPTER_INFO*>(adapterInfoBuffer.data());
-    
+
     if (GetAdaptersInfo(adapterInfo, &bufferSize) != ERROR_SUCCESS)
     {
         /* Resize adapter info buffer */
         adapterInfoBuffer.resize(bufferSize);
         adapterInfo = reinterpret_cast<IP_ADAPTER_INFO*>(adapterInfoBuffer.data());
     }
-    
+
     /* Final call to receive adapter info */
     auto result = GetAdaptersInfo(adapterInfo, &bufferSize);
-    
+
     if (result != ERROR_SUCCESS)
         throw std::runtime_error("failed to enumerate network adapters: " + AdaptersInfoErrorToString(result));
-    
+
     /* Iterate over all network adapters */
     for (; adapterInfo != nullptr; adapterInfo = adapterInfo->Next)
     {

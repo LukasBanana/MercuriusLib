@@ -33,7 +33,7 @@ class IPv4Address : public IPAddress
 
         unsigned short Port() const override;
         void Port(unsigned short port) override;
-        
+
         const void* GetNativeHandle() const override;
         void* GetNativeHandle() override;
 

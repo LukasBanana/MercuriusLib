@@ -19,9 +19,9 @@ namespace Mc
 
 class BerkeleyTCPSocket : public TCPSocket
 {
-    
+
     public:
-        
+
         BerkeleyTCPSocket(const AddressFamily family);
         BerkeleyTCPSocket(SOCKET sock);
 
@@ -40,7 +40,7 @@ class BerkeleyTCPSocket : public TCPSocket
     private:
 
         BerkeleySocket sock_;
-        
+
 };
 
 

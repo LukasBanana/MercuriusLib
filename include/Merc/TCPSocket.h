@@ -20,13 +20,13 @@ namespace Mc
 
 class MC_EXPORT TCPSocket : public Socket
 {
-    
+
     public:
-        
+
         static std::unique_ptr<TCPSocket> Make(const AddressFamily family);
 
         SocketType Type() const override;
-        SocketProtocol Protocol() const override; 
+        SocketProtocol Protocol() const override;
 
         //! Binds this socket to the specified address.
         virtual void Bind(const IPAddress& address) = 0;
@@ -51,7 +51,7 @@ class MC_EXPORT TCPSocket : public Socket
 
         //! Receives a string with a maximal size of the specified stirng (must be pre-allocated) and returns the number of actually received bytes.
         int Recv(std::string& s);
-        
+
 };
 
 

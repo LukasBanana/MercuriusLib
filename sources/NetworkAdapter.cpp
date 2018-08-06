@@ -28,11 +28,11 @@ MC_EXPORT std::string ToString(const NetworkAdapterType t)
 }
 
 NetworkAdapter::NetworkAdapter(
-    const NetworkAdapterType type,
-    const std::string& description,
-    const std::string& addressName,
-    const std::string& subnetMask,
-    bool active
+    const NetworkAdapterType    type,
+    const std::string&          description,
+    const std::string&          addressName,
+    const std::string&          subnetMask,
+    bool                        active
 ) :
     type        { type        },
     description { description },
@@ -58,9 +58,9 @@ std::unique_ptr<IPAddress> NetworkAdapter::BroadcastAddress(unsigned short port)
         in_addr         ui32;
         unsigned char   ui8[4];
     };
-    
+
     AddrBytes addr, mask;
-    
+
     addr.ui32 = AddressNameToBinary(addressName);
     mask.ui32 = AddressNameToBinary(subnetMask);
 

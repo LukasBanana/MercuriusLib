@@ -27,7 +27,7 @@ class BerkeleySocket
 
         // Takes the ownership of the specified socket.
         BerkeleySocket(SOCKET sock);
-        
+
         // Opens a new socket with the specified parameters.
         BerkeleySocket(int domain, int type, int protocol);
 
@@ -38,7 +38,7 @@ class BerkeleySocket
 
         BerkeleySocket(const BerkeleySocket&) = delete;
         BerkeleySocket& operator = (const BerkeleySocket&) = delete;
-        
+
         void SetNonBlocking(bool enable);
         void SetBroadcasting(bool enable);
         void SetReuseAddress(bool enable);

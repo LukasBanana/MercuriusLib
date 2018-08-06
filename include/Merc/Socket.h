@@ -51,7 +51,7 @@ class MC_EXPORT Socket
         virtual SocketType Type() const = 0;
 
         //! Returns the socket protocol.
-        virtual SocketProtocol Protocol() const = 0; 
+        virtual SocketProtocol Protocol() const = 0;
 
 };
 

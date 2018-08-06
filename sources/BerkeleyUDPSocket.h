@@ -19,9 +19,9 @@ namespace Mc
 
 class BerkeleyUDPSocket : public UDPSocket
 {
-    
+
     public:
-        
+
         BerkeleyUDPSocket(const AddressFamily family);
         BerkeleyUDPSocket(SOCKET sock);
 
@@ -37,7 +37,7 @@ class BerkeleyUDPSocket : public UDPSocket
     private:
 
         BerkeleySocket sock_;
-        
+
 };
 
 

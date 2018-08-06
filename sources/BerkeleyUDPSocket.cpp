@@ -82,7 +82,7 @@ int BerkeleyUDPSocket::Recv(void* data, std::size_t dataSize, IPAddress& address
     if (result > 0)
     {
         if (addrSize == address.GetNativeHandleSize())
-            memcpy(address.GetNativeHandle(), &addr, static_cast<std::size_t>(addrSize));
+            ::memcpy(address.GetNativeHandle(), &addr, static_cast<std::size_t>(addrSize));
         else
             throw std::runtime_error("socket address size mismatch when receiving data from UDP/IP socket");
     }
