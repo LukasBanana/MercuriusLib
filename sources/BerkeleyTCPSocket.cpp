@@ -104,21 +104,25 @@ void BerkeleyTCPSocket::Connect(const IPAddress& address)
 
 int BerkeleyTCPSocket::Send(const void* data, std::size_t dataSize)
 {
-    return ::send(
-        sock_.GetNativeHandle(),
-        reinterpret_cast<const char*>(data),
-        static_cast<int>(dataSize),
-        0
+    return static_cast<int>(
+        ::send(
+            sock_.GetNativeHandle(),
+            reinterpret_cast<const char*>(data),
+            static_cast<int>(dataSize),
+            0
+        )
     );
 }
 
 int BerkeleyTCPSocket::Recv(void* data, std::size_t dataSize)
 {
-    return ::recv(
-        sock_.GetNativeHandle(),
-        reinterpret_cast<char*>(data),
-        static_cast<int>(dataSize),
-        0
+    return static_cast<int>(
+        ::recv(
+            sock_.GetNativeHandle(),
+            reinterpret_cast<char*>(data),
+            static_cast<int>(dataSize),
+            0
+        )
     );
 }
 

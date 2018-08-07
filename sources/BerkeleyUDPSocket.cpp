@@ -53,13 +53,15 @@ void BerkeleyUDPSocket::Bind(const IPAddress& address)
 int BerkeleyUDPSocket::Send(const void* data, std::size_t dataSize, const IPAddress& address)
 {
     /* Send network message to specified destination address */
-    return ::sendto(
-        sock_.GetNativeHandle(),
-        reinterpret_cast<const char*>(data),
-        static_cast<int>(dataSize),
-        0,
-        reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
-        address.GetNativeHandleSize()
+    return static_cast<int>(
+        ::sendto(
+            sock_.GetNativeHandle(),
+            reinterpret_cast<const char*>(data),
+            static_cast<int>(dataSize),
+            0,
+            reinterpret_cast<const sockaddr*>(address.GetNativeHandle()),
+            address.GetNativeHandleSize()
+        )
     );
 }
 
@@ -87,7 +89,7 @@ int BerkeleyUDPSocket::Recv(void* data, std::size_t dataSize, IPAddress& address
             throw std::runtime_error("socket address size mismatch when receiving data from UDP/IP socket");
     }
 
-    return result;
+    return static_cast<int>(result);
 }
 
 

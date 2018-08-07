@@ -27,7 +27,7 @@ IPv4Address::IPv4Address(unsigned short port, unsigned long address) :
 {
     addr_.sin_family        = AF_INET;
     addr_.sin_port          = htons(port);
-    addr_.sin_addr.s_addr   = address;
+    addr_.sin_addr.s_addr   = static_cast<in_addr_t>(address);
 }
 
 IPv4Address::IPv4Address(unsigned short port, const std::string& addressName) :
