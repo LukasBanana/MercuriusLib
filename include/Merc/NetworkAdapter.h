@@ -44,11 +44,11 @@ struct MC_EXPORT NetworkAdapter
     NetworkAdapter& operator = (NetworkAdapter&&) = default;
 
     NetworkAdapter(
-        const NetworkAdapterType type,
-        const std::string& description,
-        const std::string& addressName,
-        const std::string& subnetMask,
-        bool active
+        const NetworkAdapterType    type,
+        const std::string&          description,
+        const std::string&          addressName,
+        const std::string&          subnetMask,
+        bool                        active
     );
 
     //! Returns a broadcast address for this adapter with an optional port number.

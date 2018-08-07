@@ -37,6 +37,8 @@ file(GLOB SourcesPlatformCore "${PROJECT_SOURCE_DIR}/sources/Platform/*.*")
 
 if(WIN32)
 	file(GLOB SourcesPlatform "${PROJECT_SOURCE_DIR}/sources/Platform/Win32/*.*")
+elseif(APPLE)
+	file(GLOB SourcesPlatform "${PROJECT_SOURCE_DIR}/sources/Platform/MacOS/*.*")
 elseif(UNIX)
 	file(GLOB SourcesPlatform "${PROJECT_SOURCE_DIR}/sources/Platform/Unix/*.*")
 endif()
