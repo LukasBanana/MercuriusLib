@@ -27,7 +27,11 @@ IPv4Address::IPv4Address(unsigned short port, unsigned long address) :
 {
     addr_.sin_family        = AF_INET;
     addr_.sin_port          = htons(port);
+    #if defined __linux__ || defined __APPLE__
     addr_.sin_addr.s_addr   = static_cast<in_addr_t>(address);
+    #else
+    addr_.sin_addr.s_addr   = address;
+    #endif
 }
 
 IPv4Address::IPv4Address(unsigned short port, const std::string& addressName) :
